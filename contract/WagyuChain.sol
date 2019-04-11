@@ -4,6 +4,10 @@ pragma solidity ^0.4.0;
 // A mapping exists of cow owners to an array of cows which
 contract WagyuChain {
 
+    enum Status {
+        CALF, ADULT, DIED, DISEASED, SLAUGHTER_READY, SLAUGHTERED
+    }
+
     struct Cow {
         address id;
         address owner;
@@ -19,7 +23,7 @@ contract WagyuChain {
         address parentMale;
         address parentFemale;
 
-        address abottoir;
+        address abattoir;
         uint[] partsIndex;
         mapping(uint => Part) parts;
 
@@ -41,6 +45,7 @@ contract WagyuChain {
         string memory description;
         uint value;
         uint packagingId;
+        bool sold;
     }
 
     struct Checkup {
@@ -60,9 +65,9 @@ contract WagyuChain {
     event onVeterinarianVisit(address cowAddress, uint status);
     event onMealReceived(address cowAddress);
     event onSlaughteredEvent(address cowId, address abattoir, address slaughteredBy);
-    event onPackagedEvent(uint id, uint packagedBy, uint packageStation);
-    event onDistributedEvent(uint id, uint retail);
-    event onSoldEvent(uint id);
+    event onPackagedEvent(address cowAddress, uint partId, address packagedBy, uint packageStation);
+    event onDistributedEvent(address cowAddress, uint partId, address recieveCentre);
+    event onSoldEvent(address cowAddress, uint partId);
 
     // Some modifier can be made generic such as isContractOwner & isCowOwner to isOwner(uint realOwnerAddress) but this may not reflect the intended purpose of modifiers
     modifier checkupNotExists(address cowAddress, uint checkupId) {
@@ -105,6 +110,11 @@ contract WagyuChain {
         _;
     }
 
+    modifier partNotSold(address cowAddress, uint partId) {
+        require(!cowMapping[cowAddress].parts[partId].sold, "This item has already been sold, it cannot be sold again.");
+        _;
+    }
+
     constructor() payable {
         BkBOwner = msg.sender;
     }
@@ -113,8 +123,20 @@ contract WagyuChain {
 
     }
 
-    function born(address owner, address cowAddress, address farm, uint rfid, uint value, string memory status, uint weight, uint height, uint length, uint value, bool isMale, address parentMale, address parentFemale) notExistsCow(cowAddress) {
-        cowMapping[cowAddress] = Cow(cowAddress, owner, farm, rfid, value, status, weight, height, length, value, isMale, 0, 0, 0, 0);
+    // getters for cow, cow parts
+
+    function setStatus(address cowAddress, Status newStatus) existsCow(cowAddress) isCowsOwner(cowAddress) {
+        var oldStatus = cowMapping[cowAddress].status;
+        cowMapping[cowAddress].status = newStatus;
+        emit onStatusUpdate(cowAddress, oldStatus, newStatus);
+    }
+
+    function setAbattoir(address cowAddress, address _abattoir) existsCow(cowAddress) isCowsOwner(cowAddress) {
+        cowMapping[cowAddress].abattoir = _abattoir;
+    }
+
+    function born(address owner, address cowAddress, address farm, uint rfid, uint value, uint weight, uint height, uint length, uint value, bool isMale, address parentMale, address parentFemale) notExistsCow(cowAddress) {
+        cowMapping[cowAddress] = Cow(cowAddress, owner, farm, rfid, value, Status.CALF, weight, height, length, value, isMale, 0, 0, 0, 0);
         emit onBornEvent(owner, id);
     }
 
@@ -130,12 +152,6 @@ contract WagyuChain {
         emit onRelocatedEvent(cowAddress, oldLocation, newLocation);
     }
 
-    function updateStatus(address cowAddress, uint newStatus) existsCow(cowAddress) isCowsOwner(cowAddress) notSameStatus(cowMapping[cowAddress].status, newStatus) {
-        var oldStatus = cowMapping[cowAddress].status;
-        cowMapping[cowAddress].status = newStatus;
-        emit onStatusUpdate(cowAddress, oldStatus, newStatus);
-    }
-
     function mealReceived(address cowAddress, uint id, byte32 foodType, uint quantity) existsCow(cowAddress) isCowsOwner(cowAddress) {
         cowMapping[cowAddress].meals[id] = Meal(id, foodType, quantity);
         cowMapping[cowAddress].mealsIndex.push(id);
@@ -148,19 +164,33 @@ contract WagyuChain {
         emit onVeterinarianVisit(cowAddress, status);
     }
 
-    function sendToAbottoir(address cowAddress, address abottoirAddress) existsCow(cowAddress) isCowsOwner(cowAddress) {
-
+    function sendToAbattoir(address cowAddress, address abattoirAddress) existsCow(cowAddress) isCowsOwner(cowAddress) {
+        var oldStatus = cowMapping[cowAddress].status;
+        cowMapping[cowAddress].abattoir = abattoirAddress;
+        emit onRelocatedEvent(cowAddress, cowMapping[cowAddress].farm, abattoirAddress);
+        emit onStatusUpdate(cowMapping, oldStatus, Status.SLAUGHTER_READY);
     }
 
-    function addCowPart(address cowAddress, uint partId, uint value, string memory description, uint packagingId) isProcessingAbottoir(cowAddress) partNotExist(cowAddress, partId) {
-
+    function slaughtered(address cowAddress, address abattoir, address butcher) {
+        var oldStatus = cowMapping[cowAddress].status;
+        cowMapping[cowAddress].status = Status.SLAUGHTERED;
+        emit onSlaughteredEvent(cowAddress, abattoir, butcher);
+        emit onStatusUpdate(cowMapping, oldStatus, Status.SLAUGHTERED);
     }
 
-    function transferPart(address cowAddress, uint partId, address newOwner)  existsCow(cowAddress) isCowsOwner(cowAddress) existsPart(cowAddress, partId) {
-
+    function addCowPart(address worker, uint packaging, address cowAddress, uint partId, uint value, string memory description) isProcessingAbattoir(cowAddress) partNotExist(cowAddress, partId) {
+        cowMapping[cowAddress].parts[partId] = Part(cowAddress, partId, description, value, packagingId, false);
+        cowMapping[cowAddress].partsIndex.push(partId);
+        emit onPackagedEvent(cowAddress, partId, worker, packaging);
     }
 
-    function sellPart(address cowAddress, uint partId, address owner) {
+    function transferPart(address cowAddress, uint partId, address newOwner) existsCow(cowAddress) isCowsOwner(cowAddress) existsPart(cowAddress, partId) {
+        cowMapping[cowAddress].parts[partId].owner = newOwner;
+        emit onDistributedEvent(cowAddress, partId, newOwner);
+    }
 
+    function sellPart(address cowAddress, uint partId, address newOwner) existsCow(cowAddress) isCowsOwner(cowAddress) existsPart(cowAddress, partId) partNotSold(cowAddress, partId) {
+        cowMapping[cowAddress].parts[partId].sold = true;
+        emit onSoldEvent(cowAddress, partId);
     }
 }
