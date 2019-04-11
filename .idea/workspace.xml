@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="224fac00-d784-42d4-8bb4-f0e12764148f" name="Default Changelist" comment="" />
+    <list default="true" id="224fac00-d784-42d4-8bb4-f0e12764148f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contract/WagyuChain.sol" beforeDir="false" afterPath="$PROJECT_DIR$/contract/WagyuChain.sol" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,8 +17,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/contract/WagyuChain.sol">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            <state relative-caret-position="353">
+              <caret line="145" column="79" lean-forward="true" selection-start-line="145" selection-start-column="79" selection-end-line="145" selection-end-column="79" />
             </state>
           </provider>
         </entry>
@@ -28,35 +32,40 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/WagyuChain.sol" />
+        <option value="$PROJECT_DIR$/contract/WagyuChain.sol" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-97" />
-    <option name="y" value="24" />
-    <option name="width" value="1910" />
-    <option name="height" value="792" />
+    <option name="x" value="-508" />
+    <option name="y" value="-21" />
+    <option name="width" value="1750" />
+    <option name="height" value="980" />
+  </component>
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectView">
     <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
       <pane id="Scope">
         <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
           <expand>
             <path>
-              <item name="WagyuChain" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="WagyuChain-Master" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="WagyuChain" type="2674bda8:ScopeViewTreeModel$GroupNode" />
             </path>
             <path>
-              <item name="WagyuChain" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="WagyuChain-Master" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="WagyuChain" type="2674bda8:ScopeViewTreeModel$GroupNode" />
               <item name="contract" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
@@ -64,11 +73,15 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554990819481" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="project.structure.last.edited" value="Modules" />
@@ -108,20 +121,25 @@
       <workItem from="1554668484439" duration="168000" />
       <workItem from="1554668668368" duration="271000" />
       <workItem from="1554668958402" duration="161000" />
+      <workItem from="1554961331926" duration="8365000" />
+      <workItem from="1554986560831" duration="2841000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="600000" />
+    <option name="totallyTimeSpent" value="11806000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="24" width="1920" height="1056" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25400212" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.35995623" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
       <window_info id="Favorites" order="4" side_tool="true" />
+      <window_info id="Image Layers" order="5" />
+      <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -142,6 +160,8 @@
       <window_info anchor="right" id="Maven" order="4" />
       <window_info anchor="right" id="Palette&#9;" order="5" />
       <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="Capture Analysis" order="7" />
+      <window_info anchor="right" id="Theme Preview" order="8" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,8 +171,8 @@
     <entry file="file://$PROJECT_DIR$/WagyuChain.sol" />
     <entry file="file://$PROJECT_DIR$/contract/WagyuChain.sol">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        <state relative-caret-position="353">
+          <caret line="145" column="79" lean-forward="true" selection-start-line="145" selection-start-column="79" selection-end-line="145" selection-end-column="79" />
         </state>
       </provider>
     </entry>

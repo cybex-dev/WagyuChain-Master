@@ -11,25 +11,40 @@ contract WagyuChain {
         uint rfid;
         uint value;
         uint status;
-
-        CowInfo info;
-        Meal lastMeal;
-        Checkup lastCheckup;
-    }
-
-    struct CowInfo {
         uint weight;
         uint height;
         uint length;
         bool isMale;
+
+        address parentMale;
+        address parentFemale;
+
+        address abottoir;
+        uint[] partsIndex;
+        mapping(uint => Part) parts;
+
+        uint[] mealsIndex;
+        mapping(uint => Meal) meals;
+        uint[] checkupIndex;
+        mapping(uint => Checkup) checkups;
     }
 
     struct Meal {
+        uint id;
         byte32 foodType;
         uint quantity;
     }
 
+    struct Part {
+        address owner;
+        uint id;
+        string memory description;
+        uint value;
+        uint packagingId;
+    }
+
     struct Checkup {
+        uint id;
         uint status;
         string memory description;
     }
@@ -50,6 +65,16 @@ contract WagyuChain {
     event onSoldEvent(uint id);
 
     // Some modifier can be made generic such as isContractOwner & isCowOwner to isOwner(uint realOwnerAddress) but this may not reflect the intended purpose of modifiers
+    modifier checkupNotExists(address cowAddress, uint checkupId) {
+        require(cowMapping[cowAddress].checkups[checkupId] == 0);
+        _;
+    }
+
+    modifier mealNotExists(address cowAddress, uint mealId) {
+        require(cowMapping[cowAddress].meals[mealId] == 0);
+        _;
+    }
+
     modifier isContractOwner() {
         require(msg.sender == BkBOwner);
         _;
@@ -88,8 +113,8 @@ contract WagyuChain {
 
     }
 
-    function born(address owner, address cowAddress, address farm, uint rfid, uint weight, uint height, uint length, uint value, bool isMale) notExistsCow(cowAddress) {
-        cowMapping[cowAddress] = Cow(cowAddress, owner, farm, rfid, weight, height, length, value, isMale, 0);
+    function born(address owner, address cowAddress, address farm, uint rfid, uint value, string memory status, uint weight, uint height, uint length, uint value, bool isMale, address parentMale, address parentFemale) notExistsCow(cowAddress) {
+        cowMapping[cowAddress] = Cow(cowAddress, owner, farm, rfid, value, status, weight, height, length, value, isMale, 0, 0, 0, 0);
         emit onBornEvent(owner, id);
     }
 
@@ -111,7 +136,31 @@ contract WagyuChain {
         emit onStatusUpdate(cowAddress, oldStatus, newStatus);
     }
 
-    function mealReceived(address cowAddress, uint id, byte32 foodType, uint quantity) {
+    function mealReceived(address cowAddress, uint id, byte32 foodType, uint quantity) existsCow(cowAddress) isCowsOwner(cowAddress) {
+        cowMapping[cowAddress].meals[id] = Meal(id, foodType, quantity);
+        cowMapping[cowAddress].mealsIndex.push(id);
+        emit onMealReceived(cowAddress);
+    }
+
+    function checkupReceived(address cowAddress, uint id, uint status, string memory description) existsCow(cowAddress) isCowsOwner(cowAddress) {
+        cowMapping[cowAddress].checkups[id] = Checkup(id, status, description);
+        cowMapping[cowAddress].checkupIndex.push(id);
+        emit onVeterinarianVisit(cowAddress, status);
+    }
+
+    function sendToAbottoir(address cowAddress, address abottoirAddress) existsCow(cowAddress) isCowsOwner(cowAddress) {
+
+    }
+
+    function addCowPart(address cowAddress, uint partId, uint value, string memory description, uint packagingId) isProcessingAbottoir(cowAddress) partNotExist(cowAddress, partId) {
+
+    }
+
+    function transferPart(address cowAddress, uint partId, address newOwner)  existsCow(cowAddress) isCowsOwner(cowAddress) existsPart(cowAddress, partId) {
+
+    }
+
+    function sellPart(address cowAddress, uint partId, address owner) {
 
     }
 }
