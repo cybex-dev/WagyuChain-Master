@@ -171,7 +171,7 @@ contract WagyuChain {
         return cowMapping[cowAddress].parts[partId].owner;
     }
 
-    function getCowInfo(address cowAddress) existsCow(cowAddress) public isCowsOwner(cowAddress) returns (Cow) {
+    function getCowInfo(address cowAddress) existsCow(cowAddress) public isCowsOwner(cowAddress) returns (Cow memory cow) {
         return cowMapping[cowAddress];
     }
 
