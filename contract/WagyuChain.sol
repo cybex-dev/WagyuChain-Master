@@ -64,8 +64,6 @@ contract WagyuChain {
     event onCowTransferEvent(address cowId, address oldOwner, address newOwner);            //
     event onRelocatedEvent(address cowId, address oldLocation, address newLocation);
     event onStatusUpdate(address cowId, uint oldStatus, uint newStatus);
-    event onVeterinarianVisit(address cowAddress, uint status);
-    event onSlaughteredEvent(address cowId, address abattoir, address slaughteredBy);
     event onPackagedEvent(address cowAddress, uint partId, address packagedBy, uint packageStation);
     event onDistributedEvent(address cowAddress, uint partId, address recieveCentre);
     event onSoldEvent(address cowAddress, uint partId);
@@ -187,7 +185,6 @@ contract WagyuChain {
     function checkupReceived(address cowAddress, uint id, uint status, bytes32 description) public existsCow(cowAddress) isCowsOwner(cowAddress) checkupNotExists(cowAddress, id){
         cowMapping[cowAddress].checkups[id] = Checkup(id, status, description);
         cowMapping[cowAddress].checkupIndex.push(id);
-        emit onVeterinarianVisit(cowAddress, status);
     }
 
     function sendToAbattoir(address cowAddress) public existsCow(cowAddress) isCowsOwner(cowAddress) {
@@ -196,10 +193,9 @@ contract WagyuChain {
         emit onStatusUpdate(cowAddress, oldStatus, uint(Status.SLAUGHTER_READY));
     }
 
-    function slaughtered(address cowAddress, address butcher) public existsCow(cowAddress) isProcessingAbattoir(cowMapping[cowAddress].abattoir) {
+    function slaughtered(address cowAddress) public existsCow(cowAddress) isProcessingAbattoir(cowMapping[cowAddress].abattoir) {
         uint oldStatus = cowMapping[cowAddress].status;
         cowMapping[cowAddress].status = uint(Status.SLAUGHTERED);
-        emit onSlaughteredEvent(cowAddress, cowMapping[cowAddress].abattoir, butcher);
         emit onStatusUpdate(cowAddress, oldStatus, uint(Status.SLAUGHTERED));
     }
 
@@ -219,7 +215,6 @@ contract WagyuChain {
         cowMapping[cowAddress].parts[partId].sold = true;
         cowMapping[cowAddress].parts[partId].owner = newOwner;
         msg.sender.call.value(cowMapping[cowAddress].parts[partId].value);
-        emit onSoldEvent(cowAddress, partId);
     }
 
     function setPartValue(address cowAddress, uint partId, uint newValue) public isCowsOwner(cowAddress) existsPart(cowAddress, partId) {
