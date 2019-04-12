@@ -60,7 +60,7 @@ contract WagyuChain {
     address[] cowIndex;
     mapping(address => Cow) cowMapping;
 
-    event onBornEvent(address owner, uint cowId);                                           //
+    event onBornEvent(address owner, address cowId);                                           //
     event onCowTransferEvent(address cowId, address oldOwner, address newOwner);            //
     event onRelocatedEvent(address cowId, address oldLocation, address newLocation);
     event onStatusUpdate(address cowId, uint oldStatus, uint newStatus);
@@ -155,64 +155,68 @@ contract WagyuChain {
 
     }
 
-    function getCowTag(address cowAddress) public existsCow(cowAddress) isCowsOwner(cowAddress) returns (bytes32){
+    function getCowTag(address cowAddress) public view existsCow(cowAddress) isCowsOwner(cowAddress) returns (bytes32){
         return cowMapping[cowAddress].rfid;
     }
 
-    function getCowPartTag(address cowAddress, uint partId) public existsCow(cowAddress) existsPart(cowAddress, partId) isCowPartOwner(cowAddress, partId) returns (bytes32) {
+    function getCowPartTag(address cowAddress, uint partId) public view existsCow(cowAddress) existsPart(cowAddress, partId) isCowPartOwner(cowAddress, partId) returns (bytes32) {
         return cowMapping[cowAddress].parts[partId].rfid;
     }
 
-    function getCowPartValue(address cowAddress, uint partId) public existsCow(cowAddress) existsPart(cowAddress, partId) isCowPartOwner(cowAddress, partId) returns (uint) {
+    function getCowPartValue(address cowAddress, uint partId) public view existsCow(cowAddress) existsPart(cowAddress, partId) isCowPartOwner(cowAddress, partId) returns (uint) {
         return cowMapping[cowAddress].parts[partId].value;
     }
 
-    function getCowPartOwner(address cowAddress, uint partId) public existsCow(cowAddress) isCowsOwner(cowAddress) existsPart(cowAddress, partId) returns (address) {
+    function getCowPartOwner(address cowAddress, uint partId) public view existsCow(cowAddress) isCowsOwner(cowAddress) existsPart(cowAddress, partId) returns (address) {
         return cowMapping[cowAddress].parts[partId].owner;
     }
 
-    function getCowInfo(address cowAddress) existsCow(cowAddress) public isCowsOwner(cowAddress) returns (Cow memory cow) {
-        return cowMapping[cowAddress];
+    function getCowInfo(address cowAddress) existsCow(cowAddress) public view isCowsOwner(cowAddress) returns (address, address, address, bytes32, uint, uint, uint, uint, uint, bool) {
+        Cow memory cow = cowMapping[cowAddress];
+        return (cow.id, cow.owner, cow.farm, cow.rfid, cow.value, cow.status, cow.weight, cow.height, cow.length, cow.isMale);
     }
 
-    function getAllCowIds(address cowAddress) public existsCow(cowAddress) isContractOwner() returns (address[] memory) {
+    function getAllCowIds(address cowAddress) public view existsCow(cowAddress) isContractOwner() returns (address[] memory) {
         return cowIndex;
     }
 
-    function getAllCowPartsIds(address cowAddress) public existsCow(cowAddress) isCowsOwner(cowAddress) returns (uint[] memory)  {
+    function getAllCowPartsIds(address cowAddress) public view existsCow(cowAddress) isCowsOwner(cowAddress) returns (uint[] memory)  {
         return cowMapping[cowAddress].partsIndex;
     }
 
-    function getCowPart(address cowAddress, uint partId) public existsCow(cowAddress) isCowsOwner(cowAddress) existsPart(cowAddress, partId) returns (Part memory) {
-        return cowMapping[cowAddress].parts[partId];
+    function getCowPart(address cowAddress, uint partId) public view existsCow(cowAddress) isCowsOwner(cowAddress) existsPart(cowAddress, partId) returns (address, uint, bytes32, string memory, uint, uint, bool) {
+        Part memory part = cowMapping[cowAddress].parts[partId];
+        return (part.owner, part.id, part.rfid, part.description, part.value, part.packagingId, part.sold);
     }
 
-    function isCowPartSold(address cowAddress, uint partId) public existsCow(cowAddress) existsPart(cowAddress, partId) returns (bool){
+    function isCowPartSold(address cowAddress, uint partId) public view existsCow(cowAddress) existsPart(cowAddress, partId) returns (bool){
         return cowMapping[cowAddress].parts[partId].sold;
     }
 
-    function getCowStatus(address cowAddress) existsCow(cowAddress) public isCowsOwner(cowAddress) returns (Status) {
-        return cowMapping[cowAddress].status;
+    function getCowStatus(address cowAddress) public view existsCow(cowAddress)  isCowsOwner(cowAddress) returns (uint) {
+        return uint(cowMapping[cowAddress].status);
     }
 
-    function getCowCheckupIds(address cowAddress) existsCow(cowAddress) public isCowsOwner(cowAddress) returns (uint[] memory) {
+    function getCowCheckupIds(address cowAddress) public view existsCow(cowAddress) isCowsOwner(cowAddress) returns (uint[] memory) {
         return cowMapping[cowAddress].checkupIndex;
     }
 
-    function getCowCheckup(address cowAddress, uint checkupId) public existsCow(cowAddress) isCowsOwner(cowAddress) checkupExists(cowAddress, checkupId) returns (Checkup memory) {
-        return cowMapping[cowAddress].checkups[checkupId];
+    function getCowCheckup(address cowAddress, uint checkupId) public view existsCow(cowAddress) isCowsOwner(cowAddress) checkupExists(cowAddress, checkupId) returns (uint, uint, string memory) {
+        Checkup memory checkup = cowMapping[cowAddress].checkups[checkupId];
+        return (checkup.id, checkup.status, checkup.description);
     }
 
-    function getCowMealIds(address cowAddress) existsCow(cowAddress)  public isCowsOwner(cowAddress) returns (uint[] memory) {
+    function getCowMealIds(address cowAddress) existsCow(cowAddress) public view isCowsOwner(cowAddress) returns (uint[] memory) {
         return cowMapping[cowAddress].mealsIndex;
     }
 
-    function getCowMeal(address cowAddress, uint mealId) existsCow(cowAddress) public isCowsOwner(cowAddress) mealExists(cowAddress, mealId) returns (Meal memory) {
-        return cowMapping[cowAddress].meals[mealId];
+    function getCowMeal(address cowAddress, uint mealId) existsCow(cowAddress) public view isCowsOwner(cowAddress) mealExists(cowAddress, mealId) returns (uint, bytes32, uint ) {
+        Meal memory meal = cowMapping[cowAddress].meals[mealId];
+        return (meal.id, meal.foodType, meal.quantity);
     }
 
-    function setStatus(address cowAddress, Status newStatus) public existsCow(cowAddress) isCowsOwner(cowAddress) {
-        var oldStatus = cowMapping[cowAddress].status;
+    function setStatus(address cowAddress, uint newStatus) public existsCow(cowAddress) isCowsOwner(cowAddress) {
+        uint oldStatus = cowMapping[cowAddress].status;
         cowMapping[cowAddress].status = newStatus;
         emit onStatusUpdate(cowAddress, oldStatus, newStatus);
     }
@@ -221,20 +225,37 @@ contract WagyuChain {
         cowMapping[cowAddress].abattoir = _abattoir;
     }
 
-    function born(address owner, address cowAddress, address farm, bytes32 rfid, uint value, uint weight, uint height, uint length, bool isMale, address parentMale, address parentFemale) public notExistsCow(cowAddress) {
-        cowMapping[cowAddress] = Cow(cowAddress, owner, farm, rfid, value, Status.CALF, weight, height, length, value, isMale, 0, 0, 0, 0);
+    function born(address _owner, address cowAddress, address _farm, bytes32 _rfid, uint _value, uint _weight, uint _height, uint _length, bool _isMale, address _parentMale, address _parentFemale, address abattoirAddress) public notExistsCow(cowAddress) {
+        cowMapping[cowAddress] = Cow({
+            id: cowAddress,
+            owner: _owner,
+            farm: _farm,
+            rfid: _rfid,
+            value: _value,
+            status: uint(Status.CALF),
+            weight: _weight,
+            height: _height,
+            length: _length,
+            isMale: _isMale,
+            parentMale: _parentMale,
+            parentFemale: _parentFemale,
+            abattoir: abattoirAddress,
+            partsIndex: new uint[](0),
+            mealsIndex: new uint[](0),
+            checkupIndex: new uint[](0)
+            });
         cowIndex.push(cowAddress);
-        emit onBornEvent(owner, cowAddress);
+        emit onBornEvent(_owner, cowAddress);
     }
 
-    function transfer(address cowAddress, address newOwner) public existsCow(cowAddress) isCowsOwner(cowAddress) hasEther(cowMapping(cowAddress).value) {
-        msg.sender.call.value(cowMapping(cowAddress).value);
-        cowMapping(cowAddress).owner = newOwner;
+    function transfer(address cowAddress, address newOwner) public payable existsCow(cowAddress) isCowsOwner(cowAddress) hasEther(cowMapping[cowAddress].value) {
+        msg.sender.call.value(cowMapping[cowAddress].value);
+        cowMapping[cowAddress].owner = newOwner;
         emit onCowTransferEvent(cowAddress, msg.sender, newOwner);
     }
 
     function relocate(address cowAddress, address newLocation) public existsCow(cowAddress) isCowsOwner(cowAddress) notSameLocation(cowMapping[cowAddress].farm, newLocation) {
-        var oldLocation = cowMapping[cowAddress].farm;
+        address oldLocation = cowMapping[cowAddress].farm;
         cowMapping[cowAddress].farm = newLocation;
         emit onRelocatedEvent(cowAddress, oldLocation, newLocation);
     }
@@ -252,17 +273,17 @@ contract WagyuChain {
     }
 
     function sendToAbattoir(address cowAddress, address abattoirAddress) public existsCow(cowAddress) isCowsOwner(cowAddress) {
-        var oldStatus = cowMapping[cowAddress].status;
+        uint oldStatus = cowMapping[cowAddress].status;
         cowMapping[cowAddress].abattoir = abattoirAddress;
         emit onRelocatedEvent(cowAddress, cowMapping[cowAddress].farm, abattoirAddress);
-        emit onStatusUpdate(cowMapping, oldStatus, Status.SLAUGHTER_READY);
+        emit onStatusUpdate(cowAddress, oldStatus, uint(Status.SLAUGHTER_READY));
     }
 
     function slaughtered(address cowAddress, address abattoir, address butcher) public existsCow(cowAddress) isProcessingAbattoir(abattoir) {
-        var oldStatus = cowMapping[cowAddress].status;
-        cowMapping[cowAddress].status = Status.SLAUGHTERED;
+        uint oldStatus = cowMapping[cowAddress].status;
+        cowMapping[cowAddress].status = uint(Status.SLAUGHTERED);
         emit onSlaughteredEvent(cowAddress, abattoir, butcher);
-        emit onStatusUpdate(cowMapping, oldStatus, Status.SLAUGHTERED);
+        emit onStatusUpdate(cowAddress, oldStatus, uint(Status.SLAUGHTERED));
     }
 
     function addCowPart(address worker, uint packaging, address cowAddress, uint partId, bytes32 rfid, uint value, string memory description) public existsCow(cowAddress) isProcessingAbattoir(cowAddress) partNotExist(cowAddress, partId) {
@@ -278,6 +299,7 @@ contract WagyuChain {
 
     function sellPart(address cowAddress, uint partId, address newOwner) public existsCow(cowAddress) isCowsOwner(cowAddress) existsPart(cowAddress, partId) partNotSold(cowAddress, partId) {
         cowMapping[cowAddress].parts[partId].sold = true;
+        cowMapping[cowAddress].parts[partId].owner = newOwner;
         emit onSoldEvent(cowAddress, partId);
     }
 
