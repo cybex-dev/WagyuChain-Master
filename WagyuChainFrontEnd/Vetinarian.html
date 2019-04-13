@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Farmer</title>
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/web3.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <!-- Brand/logo -->
+    <a class="navbar-brand" href="index.html">WagyuChain</a>
+
+    <!-- Links -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="Abattoir.html">Abattoir</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="Consumer.html">Consumer</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="Farmer.html">Farmer</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="Retailer.html">Retailer</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="Vetinarian.html">Vetinarian</a>
+        </li>
+    </ul>
+</nav>
+<div class="container-fluid">
+    <br/>
+    <div class="card">
+        <div class="card-body">
+            <h2>Vetinarian Menu</h2>
+        </div>
+    </div>
+    <br/>
+    <div class="card">
+        <div class="card-header bg-light">
+            Add Checkup
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" onclick="addCow()" class="btn btn-primary">Add Checkup</a>
+        </div>
+    </div>
+    <br/>
+</div>
+<script>
+    let web3 = null;
+    window.addEventListener('load', function () {
+        if (typeof window.web3 !== 'undefined') {
+            web3 = new Web3(window.web3.currentProvider);
+        } else {
+            // No web 3 provider
+            console.log("Please install Metamask");
+            alert('Unable to connect to Metamask provider')
+        }
+    });
+
+    function addCheckup() {
+
+    };
+</script>
+</body>
+</html>
