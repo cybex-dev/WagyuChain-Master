@@ -19,6 +19,7 @@ contract WagyuChain {
         uint height;
         uint length;
         bool isMale;
+        bool forSale;
 
         address parentMale;
         address parentFemale;
@@ -69,6 +70,7 @@ contract WagyuChain {
     event onPackagedEvent(address cowAddress, uint partId, address packagedBy, uint packageStation);
     event onDistributedEvent(address cowAddress, uint partId, address recieveCentre);
     event onSoldEvent(address cowAddress, uint partId);
+    event onCowForSale(address cowAddress, bool isForSale);
 
     modifier isProcessingAbattoir(address cowAddress) {
         assert(cowMapping[cowAddress].abattoir == msg.sender);
@@ -130,12 +132,22 @@ contract WagyuChain {
         _;
     }
 
+    modifier isCowForSale(address cowAddress) {
+        assert(cowMapping[cowAddress].forSale);
+        _;
+    }
+
     constructor() public payable {
         bkbOwner = msg.sender;
     }
 
     function() external payable {
 
+    }
+
+    function setCowMarketStatus(address cowAddress, bool isForSale) public existsCow(cowAddress) isCowsOwner(cowAddress) {
+        cowMapping[cowAddress].forSale = isForSale;
+        emit onCowForSale(cowAddress, isForSale);
     }
 
     function setStatus(address cowAddress, uint newStatus) public existsCow(cowAddress) isCowsOwner(cowAddress) {
@@ -156,6 +168,7 @@ contract WagyuChain {
             height: _height,
             length: _length,
             isMale: _isMale,
+            forSale: false,
             parentMale: _parentMale,
             parentFemale: _parentFemale,
             abattoir: abattoirAddress,
@@ -167,10 +180,14 @@ contract WagyuChain {
         emit onBornEvent(_owner, cowAddress);
     }
 
-    function transfer(address cowAddress, address newOwner) public payable existsCow(cowAddress) isCowsOwner(cowAddress) hasEther(cowMapping[cowAddress].value) {
-        msg.sender.call.value(cowMapping[cowAddress].value);
+    function transfer(address cowAddress, address newOwner) public payable existsCow(cowAddress) isCowForSale(cowAddress) hasEther(cowMapping[cowAddress].value) {
+        cowMapping[cowAddress].owner.call.value(cowMapping[cowAddress].value);
         cowMapping[cowAddress].owner = newOwner;
         emit onCowTransferEvent(cowAddress, msg.sender, newOwner);
+    }
+
+    function isForSale(address cowAddress) public view existsCow(cowAddress) returns (bool) {
+        return cowMapping[cowAddress].forSale;
     }
 
     function relocate(address cowAddress, address newLocation) public existsCow(cowAddress) isCowsOwner(cowAddress) notSameLocation(cowMapping[cowAddress].farm, newLocation) {
@@ -209,16 +226,16 @@ contract WagyuChain {
         emit onPackagedEvent(cowAddress, partId, worker, packaging);
     }
 
-    function transferPart(address cowAddress, uint partId, address newOwner) public payable existsCow(cowAddress) isCowsOwner(cowAddress) existsPart(cowAddress, partId) hasEther(cowMapping[cowAddress].parts[partId].value) {
+    function transferPart(address cowAddress, uint partId, address newOwner) public payable existsCow(cowAddress) existsPart(cowAddress, partId) hasEther(cowMapping[cowAddress].parts[partId].value) {
+        cowMapping[cowAddress].owner.call.value(cowMapping[cowAddress].parts[partId].value);
         cowMapping[cowAddress].parts[partId].owner = newOwner;
-        msg.sender.call.value(cowMapping[cowAddress].parts[partId].value);
         emit onDistributedEvent(cowAddress, partId, newOwner);
     }
 
-    function sellPart(address cowAddress, uint partId, address newOwner) public existsCow(cowAddress) isCowsOwner(cowAddress) existsPart(cowAddress, partId) partNotSold(cowAddress, partId) {
+    function sellPart(address cowAddress, uint partId, address newOwner) public existsCow(cowAddress) existsPart(cowAddress, partId) partNotSold(cowAddress, partId) {
         cowMapping[cowAddress].parts[partId].sold = true;
         cowMapping[cowAddress].parts[partId].owner = newOwner;
-        msg.sender.call.value(cowMapping[cowAddress].parts[partId].value);
+        cowMapping[cowAddress].owner.call.value(cowMapping[cowAddress].parts[partId].value);
         emit onSoldEvent(cowAddress, partId);
     }
 
