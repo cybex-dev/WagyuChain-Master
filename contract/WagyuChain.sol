@@ -260,7 +260,7 @@ contract WagyuChain {
         emit onDistributedEvent(cowAddress, partId, newOwner);
     }
 
-    function sellPart(address cowAddress, uint partId, address newOwner) public existsCow(cowAddress) existsPart(cowAddress, partId) partNotSold(cowAddress, partId) {
+    function buyPart(address cowAddress, uint partId, address newOwner) public existsCow(cowAddress) existsPart(cowAddress, partId) partNotSold(cowAddress, partId) {
         cowMapping[cowAddress].parts[partId].sold = true;
         cowMapping[cowAddress].parts[partId].owner = newOwner;
         cowMapping[cowAddress].owner.call.value(cowMapping[cowAddress].parts[partId].value);
