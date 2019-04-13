@@ -36,7 +36,7 @@ contract WagyuChain {
 
     struct Meal {
         uint id;
-        bytes32 foodType;
+        string foodType;
         uint quantity;
     }
 
@@ -44,7 +44,7 @@ contract WagyuChain {
         address owner;
         uint id;
         bytes32 rfid;
-        bytes32 description;
+        string description;
         uint value;
         uint packagingId;
         bool sold;
@@ -53,7 +53,7 @@ contract WagyuChain {
     struct Checkup {
         uint id;
         uint status;
-        bytes32 description;
+        string description;
     }
 
     address bkbOwner;
@@ -73,67 +73,67 @@ contract WagyuChain {
     event onCowForSale(address cowAddress, bool isForSale);
 
     modifier isProcessingAbattoir(address cowAddress) {
-        assert(cowMapping[cowAddress].abattoir == msg.sender);
+        require(cowMapping[cowAddress].abattoir == msg.sender, "Invalid processing abattoir");
         _;
     }
 
     modifier partNotExist(address cowAddress, uint partId) {
-        assert(cowMapping[cowAddress].parts[partId].id != partId);
+        require(cowMapping[cowAddress].parts[partId].id != partId);
         _;
     }
 
     modifier isContractOwner() {
-        assert(msg.sender == bkbOwner);
+        require(msg.sender == bkbOwner);
         _;
     }
 
     modifier existsCow(address cowAddress) {
-        assert(cowMapping[cowAddress].id == cowAddress);
+        require(cowMapping[cowAddress].id == cowAddress);
         _;
     }
 
     modifier isCowsOwner(address cowAddress) {
-        assert(cowMapping[cowAddress].owner == msg.sender);
+        require(cowMapping[cowAddress].owner == msg.sender, "You are not the cow's owner");
         _;
     }
 
     modifier notExistsCow(address cowAddress) {
-        assert(cowMapping[cowAddress].id != address(0));
+        require(cowMapping[cowAddress].id != address(0), "Cow already registered");
         _;
     }
 
     modifier hasEther(uint value) {
-        assert(msg.value == value);
+        require(msg.value == value, "Insufficient funds");
         _;
     }
 
     modifier notSameLocation(address oldLocation, address newLocation) {
-        assert(oldLocation != newLocation);
+        require(oldLocation != newLocation, "Locations cannot be the same");
         _;
     }
 
     modifier partNotSold(address cowAddress, uint partId) {
-        assert(!cowMapping[cowAddress].parts[partId].sold);
+        require(!cowMapping[cowAddress].parts[partId].sold, "Part already sold");
         _;
     }
 
     modifier checkupNotExists(address cowAddress, uint checkupId) {
-        assert(cowMapping[cowAddress].checkups[checkupId].id != 0);
+        require(cowMapping[cowAddress].checkups[checkupId].id != 0, "Checkup record already exists");
         _;
     }
 
     modifier mealNotExists(address cowAddress, uint mealId) {
-        assert(cowMapping[cowAddress].meals[mealId].id == 0);
+        require(cowMapping[cowAddress].meals[mealId].id == 0, "Meal record already exists");
         _;
     }
 
     modifier existsPart(address cowAddress, uint partId) {
-        assert(cowMapping[cowAddress].parts[partId].id != 0);
+        require(cowMapping[cowAddress].parts[partId].id != 0, "Part does not exist");
         _;
     }
 
     modifier isCowForSale(address cowAddress) {
-        assert(cowMapping[cowAddress].forSale);
+        require(cowMapping[cowAddress].forSale, "Cow is not for sale");
         _;
     }
 
@@ -196,12 +196,12 @@ contract WagyuChain {
         emit onRelocatedEvent(cowAddress, oldLocation, newLocation);
     }
 
-    function mealReceived(address cowAddress, uint id, bytes32 foodType, uint quantity) public existsCow(cowAddress) isCowsOwner(cowAddress) mealNotExists(cowAddress, id) {
+    function mealReceived(address cowAddress, uint id, string memory foodType, uint quantity) public existsCow(cowAddress) isCowsOwner(cowAddress) mealNotExists(cowAddress, id) {
         cowMapping[cowAddress].meals[id] = Meal(id, foodType, quantity);
         cowMapping[cowAddress].mealsIndex.push(id);
     }
 
-    function checkupReceived(address cowAddress, uint id, uint status, bytes32 description) public existsCow(cowAddress) isCowsOwner(cowAddress) checkupNotExists(cowAddress, id){
+    function checkupReceived(address cowAddress, uint id, uint status, string memory description) public existsCow(cowAddress) isCowsOwner(cowAddress) checkupNotExists(cowAddress, id){
         cowMapping[cowAddress].checkups[id] = Checkup(id, status, description);
         cowMapping[cowAddress].checkupIndex.push(id);
         emit onVeterinarianVisit(cowAddress, status);
@@ -220,7 +220,7 @@ contract WagyuChain {
         emit onStatusUpdate(cowAddress, oldStatus, uint(Status.SLAUGHTERED));
     }
 
-    function addCowPart(address worker, uint packaging, address cowAddress, uint partId, bytes32 rfid, uint value, bytes32 description) public existsCow(cowAddress) isProcessingAbattoir(cowAddress) partNotExist(cowAddress, partId) {
+    function addCowPart(address worker, uint packaging, address cowAddress, uint partId, bytes32 rfid, uint value, string memory description) public existsCow(cowAddress) isProcessingAbattoir(cowAddress) partNotExist(cowAddress, partId) {
         cowMapping[cowAddress].parts[partId] = Part(cowAddress, partId, rfid, description, value, packaging, false);
         cowMapping[cowAddress].partsIndex.push(partId);
         emit onPackagedEvent(cowAddress, partId, worker, packaging);
