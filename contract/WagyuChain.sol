@@ -137,6 +137,11 @@ contract WagyuChain {
         _;
     }
 
+    modifier checkParentOffspring(address offspring, address parent1, address parent2) {
+        require(parent1 != parent2 && offspring != parent2 && offspring != parent1, "Parents/offspring have same ID");
+        _;
+    }
+
     constructor() public payable {
         bkbOwner = msg.sender;
     }
@@ -156,7 +161,7 @@ contract WagyuChain {
         emit onStatusUpdate(cowAddress, oldStatus, newStatus);
     }
 
-    function born(address _owner, address cowAddress, address _farm, bytes32 _rfid, uint _value, uint _weight, uint _height, uint _length, bool _isMale, address _parentMale, address _parentFemale, address abattoirAddress) public notExistsCow(cowAddress) {
+    function born(address _owner, address cowAddress, address _farm, bytes32 _rfid, uint _value, uint[] memory cowDims, bool _isMale, address _parentMale, address _parentFemale, address abattoirAddress) public notExistsCow(cowAddress) checkParentOffspring(cowAddress, _parentFemale, _parentMale) {
         cowMapping[cowAddress] = Cow({
             id: cowAddress,
             owner: _owner,
@@ -164,9 +169,9 @@ contract WagyuChain {
             rfid: _rfid,
             value: _value,
             status: uint(Status.CALF),
-            weight: _weight,
-            height: _height,
-            length: _length,
+            weight: cowDims[0],
+            height: cowDims[1],
+            length: cowDims[2],
             isMale: _isMale,
             forSale: false,
             parentMale: _parentMale,
