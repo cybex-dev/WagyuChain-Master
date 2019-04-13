@@ -12,12 +12,11 @@ contract WagyuChain {
         address id;
         address owner;
         address farm;
+        address vetinarian;
         bytes32 rfid;
         uint value;
         uint status;
-        uint weight;
-        uint height;
-        uint length;
+        uint[] cowDims; // weight, height, length;
         bool isMale;
         bool forSale;
 
@@ -52,7 +51,7 @@ contract WagyuChain {
 
     struct Checkup {
         uint id;
-        uint status;
+        string status;
         string description;
     }
 
@@ -65,7 +64,7 @@ contract WagyuChain {
     event onCowTransferEvent(address cowId, address oldOwner, address newOwner);            //
     event onRelocatedEvent(address cowId, address oldLocation, address newLocation);
     event onStatusUpdate(address cowId, uint oldStatus, uint newStatus);
-    event onVeterinarianVisit(address cowAddress, uint status);
+    event onVeterinarianVisit(address cowAddress, string status);
     event onSlaughteredEvent(address cowId, address abattoir, address slaughteredBy);
     event onPackagedEvent(address cowAddress, uint partId, address packagedBy, uint packageStation);
     event onDistributedEvent(address cowAddress, uint partId, address recieveCentre);
@@ -98,7 +97,7 @@ contract WagyuChain {
     }
 
     modifier notExistsCow(address cowAddress) {
-        require(cowMapping[cowAddress].id != address(0), "Cow already registered");
+        require(cowMapping[cowAddress].id == address(0), "Cow already registered");
         _;
     }
 
@@ -118,7 +117,7 @@ contract WagyuChain {
     }
 
     modifier checkupNotExists(address cowAddress, uint checkupId) {
-        require(cowMapping[cowAddress].checkups[checkupId].id != 0, "Checkup record already exists");
+        require(cowMapping[cowAddress].checkups[checkupId].id == 0, "Checkup record already exists");
         _;
     }
 
@@ -142,6 +141,26 @@ contract WagyuChain {
         _;
     }
 
+    modifier notSameVet(address cowAddress, address newVetinarian) {
+        require(cowMapping[cowAddress].vetinarian != newVetinarian, "Vetinarians cannot be the same");
+        _;
+    }
+
+    modifier isCowsVetinarian(address cowAddress) {
+        require(cowMapping[cowAddress].vetinarian == msg.sender, "You are not the cow's vet");
+        _;
+    }
+
+    modifier canTransfer(address cowAddress) {
+        require(cowMapping[cowAddress].status != uint(Status.SLAUGHTERED), "Cow already slaughtered");
+        _;
+    }
+
+    modifier canSlaughter(address cowAddress) {
+        require(cowMapping[cowAddress].status != uint(Status.SLAUGHTERED), "Cow ready for slaughter");
+        _;
+    }
+
     constructor() public payable {
         bkbOwner = msg.sender;
     }
@@ -150,7 +169,7 @@ contract WagyuChain {
 
     }
 
-    function setCowMarketStatus(address cowAddress, bool isForSale) public existsCow(cowAddress) isCowsOwner(cowAddress) {
+    function setCowMarketStatus(address cowAddress, bool isForSale) public existsCow(cowAddress) isCowsOwner(cowAddress) canTransfer(cowAddress) {
         cowMapping[cowAddress].forSale = isForSale;
         emit onCowForSale(cowAddress, isForSale);
     }
@@ -161,58 +180,62 @@ contract WagyuChain {
         emit onStatusUpdate(cowAddress, oldStatus, newStatus);
     }
 
-    function born(address _owner, address cowAddress, address _farm, bytes32 _rfid, uint _value, uint[] memory cowDims, bool _isMale, address _parentMale, address _parentFemale, address abattoirAddress) public notExistsCow(cowAddress) checkParentOffspring(cowAddress, _parentFemale, _parentMale) {
+    function born(address cowAddress, address _farm, address _vetinarian, bytes32 _rfid, uint _value, uint[] memory _cowDims, bool _isMale, address[] memory parents, address abattoirAddress) public notExistsCow(cowAddress) checkParentOffspring(cowAddress, parents[1], parents[0])  {
+
         cowMapping[cowAddress] = Cow({
             id: cowAddress,
-            owner: _owner,
+            owner: msg.sender,
             farm: _farm,
+            vetinarian: _vetinarian,
             rfid: _rfid,
             value: _value,
             status: uint(Status.CALF),
-            weight: cowDims[0],
-            height: cowDims[1],
-            length: cowDims[2],
+            cowDims: _cowDims,
             isMale: _isMale,
             forSale: false,
-            parentMale: _parentMale,
-            parentFemale: _parentFemale,
+            parentMale: parents[0],
+            parentFemale: parents[1],
             abattoir: abattoirAddress,
             partsIndex: new uint[](0),
             mealsIndex: new uint[](0),
             checkupIndex: new uint[](0)
             });
         cowIndex.push(cowAddress);
-        emit onBornEvent(_owner, cowAddress);
+        emit onBornEvent(msg.sender, cowAddress);
     }
 
-    function transfer(address cowAddress, address newOwner) public payable existsCow(cowAddress) isCowForSale(cowAddress) hasEther(cowMapping[cowAddress].value) {
+    function setVetinarian(address cowAddress, address newVetinarian) public existsCow(cowAddress) isCowsOwner(cowAddress) notSameVet(cowAddress, newVetinarian) canTransfer(cowAddress) {
+        cowMapping[cowAddress].vetinarian = newVetinarian;
+    }
+
+    function transfer(address cowAddress, address newOwner) public payable existsCow(cowAddress) isCowForSale(cowAddress) hasEther(cowMapping[cowAddress].value) canTransfer(cowAddress) {
         cowMapping[cowAddress].owner.call.value(cowMapping[cowAddress].value);
         cowMapping[cowAddress].owner = newOwner;
         emit onCowTransferEvent(cowAddress, msg.sender, newOwner);
     }
 
-    function isForSale(address cowAddress) public view existsCow(cowAddress) returns (bool) {
+    function isForSale(address cowAddress) public view existsCow(cowAddress) canTransfer(cowAddress) returns (bool) {
         return cowMapping[cowAddress].forSale;
     }
 
-    function relocate(address cowAddress, address newLocation) public existsCow(cowAddress) isCowsOwner(cowAddress) notSameLocation(cowMapping[cowAddress].farm, newLocation) {
+    function relocate(address cowAddress, address newLocation) public existsCow(cowAddress) isCowsOwner(cowAddress) notSameLocation(cowMapping[cowAddress].farm, newLocation) canTransfer(cowAddress) {
         address oldLocation = cowMapping[cowAddress].farm;
         cowMapping[cowAddress].farm = newLocation;
         emit onRelocatedEvent(cowAddress, oldLocation, newLocation);
     }
 
-    function mealReceived(address cowAddress, uint id, string memory foodType, uint quantity) public existsCow(cowAddress) isCowsOwner(cowAddress) mealNotExists(cowAddress, id) {
+    function mealReceived(address cowAddress, uint id, string memory foodType, uint quantity) public existsCow(cowAddress) isCowsOwner(cowAddress) mealNotExists(cowAddress, id) canTransfer(cowAddress) {
         cowMapping[cowAddress].meals[id] = Meal(id, foodType, quantity);
         cowMapping[cowAddress].mealsIndex.push(id);
     }
 
-    function checkupReceived(address cowAddress, uint id, uint status, string memory description) public existsCow(cowAddress) isCowsOwner(cowAddress) checkupNotExists(cowAddress, id){
+    function checkupReceived(address cowAddress, uint id, string memory status, string memory description) public existsCow(cowAddress) isCowsVetinarian(cowAddress) checkupNotExists(cowAddress, id) canTransfer(cowAddress) {
         cowMapping[cowAddress].checkups[id] = Checkup(id, status, description);
         cowMapping[cowAddress].checkupIndex.push(id);
         emit onVeterinarianVisit(cowAddress, status);
     }
 
-    function sendToAbattoir(address cowAddress) public existsCow(cowAddress) isCowsOwner(cowAddress) {
+    function sendToAbattoir(address cowAddress) public existsCow(cowAddress) isCowsOwner(cowAddress) canSlaughter(cowAddress) {
         uint oldStatus = cowMapping[cowAddress].status;
         emit onRelocatedEvent(cowAddress, cowMapping[cowAddress].farm, cowMapping[cowAddress].abattoir);
         emit onStatusUpdate(cowAddress, oldStatus, uint(Status.SLAUGHTER_READY));
