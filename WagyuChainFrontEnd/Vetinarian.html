@@ -6,7 +6,9 @@
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/web3.js"></script>
+    <script src="js/wagyu_contract_helper.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/wagyuchain.css"/>
 </head>
 <body>
 
@@ -29,9 +31,28 @@
             <a class="nav-link" href="Retailer.html">Retailer</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="Vetinarian.html">Vetinarian</a>
+            <a class="nav-link active" href="Vetinarian.html">Vetinarian</a>
         </li>
     </ul>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fab fa-user"></i><b>Account</b></a>
+            </li>
+            <li class="nav-item dropdown">
+                <div class="dropdown show">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Select Account...
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#">Add Account</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
 </nav>
 <div class="container-fluid">
     <br/>
@@ -57,12 +78,14 @@
     let web3 = null;
     window.addEventListener('load', function () {
         if (typeof window.web3 !== 'undefined') {
-            web3 = new Web3(window.web3.currentProvider);
+            web3 = new Web3(web3.currentProvider);
+            alert("Metamask Connected");
         } else {
+            web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
             // No web 3 provider
-            console.log("Please install Metamask");
-            alert('Unable to connect to Metamask provider')
-        }
+            console.log("Consider Metamask?");
+            alert('Local(host) provider connected');
+        };
     });
 
     function addCheckup() {

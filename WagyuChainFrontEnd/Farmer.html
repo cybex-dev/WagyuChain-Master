@@ -6,7 +6,9 @@
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/web3.js"></script>
+    <script src="js/wagyu_contract_helper.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/wagyuchain.css"/>
 </head>
 <body>
 
@@ -23,7 +25,7 @@
             <a class="nav-link" href="Consumer.html">Consumer</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="Farmer.html">Farmer</a>
+            <a class="nav-link active" href="Farmer.html">Farmer</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="Retailer.html">Retailer</a>
@@ -32,6 +34,26 @@
             <a class="nav-link" href="Vetinarian.html">Vetinarian</a>
         </li>
     </ul>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="fab fa-user"></i><b>Account</b></a>
+            </li>
+            <li class="nav-item dropdown">
+                <div class="dropdown show">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        Select Account...
+                    </button>
+
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#">Add Account</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
 </nav>
 <div class="container-fluid">
     <br/>
@@ -41,105 +63,283 @@
         </div>
     </div>
     <br/>
-    <div class="card">
-        <div class="card-header bg-light">
-            Add Cow
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" onclick="addCow()" class="btn btn-primary">Add New Cow</a>
-        </div>
-    </div>
+    <h4>Blockchain Actions</h4>
     <br/>
-    <div class="card">
-        <div class="card-header bg-light">
-            Transfer Cow
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" onclick="transfer()" class="btn btn-primary">Transfer</a>
-        </div>
-    </div>
-    <br/>
-    <div class="card">
-        <div class="card-header bg-light">
-            Relocate Cow
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" onclick="relocate()" class="btn btn-primary">Relocate</a>
-        </div>
-    </div>
-    <br/>
-    <div class="card">
-        <div class="card-header bg-light">
-            Add Cow Meal
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" onclick="addMeal()" class="btn btn-primary">Add Meal</a>
-        </div>
-    </div>
-    <br/>
-    <div class="card">
-        <div class="card-header bg-light">
-            Send Cow to Abattoir
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" onclick="toAbbottoir()" class="btn btn-primary">Slaughter Cow</a>
-        </div>
+    <div id="accordian">
         <div class="card">
-            <div class="card-header bg-light">
+            <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup01" style="cursor: pointer">
+                Add Cow
+            </div>
+            <div class="collapse" id="inputGroup01">
+                <div class="card-body">
+                    <h5 class="card-title">Create a blockchain entry for your cow</h5>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_alert_box" hidden>
+                        <strong>Errors</strong>
+                        <ul id="error_list">
+                        </ul>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Cow RFID Tag</span>
+                        </div>
+                        <input maxlength="32" type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="inputTextCowRFIDTag">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">New Cow Address</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="inputTextNewAddress">
+                        <div class="input-group-append">
+                            <button onclick="generateNewAddress('inputTextCowRFIDTag','inputTextNewAddress')" class="btn btn-outline-secondary btn-dark" type="button"><span class="text-white">Auto-generate</span></button>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect02">Choose Farm</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect02">
+                            <option selected>Choose...</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" aria-label="Checkbox for following text input" id="inputCheckVet">
+                            </div>
+                            <span class="input-group-text">Vetinarian</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="inputTextVetAddress">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Weight (Kg)</span>
+                        </div>
+                        <input type="number" class="form-control" id="inputNumberWeight">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Height and Length (cm)</span>
+                        </div>
+                        <input type="number" class="form-control" id="inputNumberHeight">
+                        <input type="number" class="form-control" id="inputNumberLength">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Value (Ether)</span>
+                        </div>
+                        <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" id="inputNumberEtherValue">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label for="inputGroupSelect03" class="input-group-text">Abottoir</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect03">
+                            <option selected>Choose...</option>
+                        </select>
+                    </div>
+                    <a href="#" onclick="addCow()" class="btn btn-primary">Add New Cow</a>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="card">
+            <div class="card-header bg-light" data-toggle="collapse" href="#inputGroupSelect02" style="cursor: pointer">
+                Purchase Cow (Transfer)
+            </div>
+            <div class="collapse" id="inputGroup02">
+                <div class="card-body">
+                    <p class="card-text">Purchase a cow by selecting the cow below.</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect01">Cows for Sale</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect01">
+                            <option selected>Choose...</option>
+                        </select>
+                    </div>
+                    <a href="#" onclick="transfer()" class="btn btn-primary">Purchase</a>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="card">
+            <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup03" style="cursor: pointer">
+                Relocate Cow
+            </div>
+            <div class="collapse" id="inputGroup03">
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" onclick="relocate()" class="btn btn-primary">Relocate</a>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="card">
+            <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup04" style="cursor: pointer">
+                Add Cow Meal
+            </div>
+            <div class="collapse" id="inputGroup04">
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" onclick="addMeal()" class="btn btn-primary">Add Meal</a>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="card">
+            <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup05" style="cursor: pointer">
+                Send Cow to Abattoir
+            </div>
+            <div class="collapse" id="inputGroup05">
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" onclick="toAbbottoir()" class="btn btn-primary">Slaughter Cow</a>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <div class="card">
+            <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup06" style="cursor: pointer">
                 Set Market Status
             </div>
-            <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" onclick="toAbbottoir()" class="btn btn-primary">Update Market Status</a>
+            <div class="collapse" id="inputGroup06">
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" onclick="toAbbottoir()" class="btn btn-primary">Update Market Status</a>
+                </div>
             </div>
         </div>
+        <br/>
         <div class="card">
-            <div class="card-header bg-light">
+            <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup07" style="cursor: pointer">
                 Set Vetinarian
             </div>
-            <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" onclick="toAbbottoir()" class="btn btn-primary">Update Vetinarian</a>
+            <div class="collapse" id="inputGroup07">
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" onclick="toAbbottoir()" class="btn btn-primary">Update Vetinarian</a>
+                </div>
             </div>
         </div>
+        <br/>
         <div class="card">
-            <div class="card-header bg-light">
+            <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup08" style="cursor: pointer">
                 Set Cow Status
             </div>
-            <div class="card-body">
-                <h5 class="card-title">Special title treatment</h5>
-                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                <a href="#" onclick="toAbbottoir()" class="btn btn-primary">Update Status</a>
+            <div class="collapse" id="inputGroup08">
+                <div class="card-body">
+                    <h5 class="card-title">Special title treatment</h5>
+                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <a href="#" onclick="toAbbottoir()" class="btn btn-primary">Update Status</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 <script>
     let web3 = null;
-    window.addEventListener('load', function () {
-        if (typeof window.web3 !== 'undefined') {
-            web3 = new Web3(window.web3.currentProvider);
-        } else {
-            // No web 3 provider
-            console.log("Please install Metamask");
-            alert('Unable to connect to Metamask provider')
-        }
-    });
+    let _activeAccount = "0x0";
+    let _etherAccounts = [];
+
+    function setEtherAccounts(etherAccounts) {
+        _etherAccounts = etherAccounts;
+        dispatchEvent(new CustomEvent('etherAccountsUpdated', { detail: etherAccounts }));
+    }
+
+    function setActiveAccount(newAccount) {
+        _activeAccount = newAccount;
+        dispatchEvent(new CustomEvent('activeAccountChanged', { detail: newAccount }));
+    }
 
     function addCow() {
+        //Clear error list and set hidden
+        $('#error_list').empty();
+        $('#error_alert_box').attr("hidden");
 
+        // check for component sanity
+        let rfid = $('#inputTextCowRFIDTag').val();
+        if (rfid === "") {
+            addItemToList(document.getElementById("error_list"), "RFID Tag cannot be empty");
+        }
+
+        let cowAddress = $('#inputTextCowRFIDTag').val();
+        if (cowAddress === "") {
+            addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
+        }
+
+        let farmAddress = $('#inputGroupSelect02').val();
+        if (farmAddress === "" || farmAddress === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Invalid Farm Address");
+        }
+
+        let vetAddress = $('#inputTextVetAddress').val();
+        if (vetAddress === "") {
+            addItemToList(document.getElementById("error_list"), "Vetinarian Address cannot be empty");
+        }
+
+        let weight = $('#inputNumberWeight').val();
+        if (weight === "" || weight === "0") {
+            addItemToList(document.getElementById("error_list"), "Weight cannot be empty and must be bigger than 0");
+        }
+
+        let height = $('#inputNumberHeight').val();
+        if (height === "" || height === "0") {
+            addItemToList(document.getElementById("error_list"), "Height cannot be empty and must be bigger than 0");
+        }
+
+        let length = $('#inputNumberLength').val();
+        if (length === "" || length === "0") {
+            addItemToList(document.getElementById("error_list"), "Length cannot be empty and must be bigger than 0");
+        }
+
+        let ether = $('#inputNumberEtherValue').val();
+        if (ether === "") {
+            addItemToList(document.getElementById("error_list"), "Value cannot be empty");
+        }
+
+        let abattoir = $('#inputGroupSelect03').val();
+        if (abattoir === "" || abattoir === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Abattoir Address cannot be empty");
+        }
+
+        // Check if there are errors to display, then display them, else continue
+        if (document.querySelectorAll("#error_list > li").length > 0) {
+            console.log("Errors while adding cow.");
+            $('#error_alert_box').removeAttr("hidden");
+        } else {
+            // Convert value to wei
+            let weiValue = ether * 1000000000000000000;
+
+            // Submit transaction
+            let contract = getWeb3Contract();
+
+            contract.methods.isForSale(weiValue).send({from: _activeAccount})
+                .on('transactionHash', (hash) => {
+                    console.log("Hash = " + hash);
+                })
+                .on('receipt', (receipt) => {
+                    console.log("receipt = " + receipt);
+                })
+                .on('confirmation', (confirmationNumber, receipt) => {
+                    console.log("confirmationNumber = " + confirmationNumber + "\nreceipt = " + receipt );
+                })
+                .on('error', console.error);
+        }
     };
 
     function relocate() {
@@ -170,9 +370,72 @@
 
     }
 
-    function getCowForSaleStatus(){
+    function getCowForSaleStatus() {
 
     }
+
+    function getAllCowsForsale() {
+
+    }
+
+    function generateNewAddress(rfid, id) {
+        let rfidValue = document.getElementById(rfid).value;
+        if (rfidValue.length === 0) {
+            alert('RFID Field cannot be empty');
+        } else {
+            web3.personal.newAccount(rfidValue, function (err, address) {
+                if(err) {
+                    console.log(err);
+                }
+                document.getElementById(id).value = address;
+            });
+        }
+    }
+
+    window.addEventListener('load', function () {
+        if (typeof window.web3 === 'undefined') {
+            web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
+            // No web 3 provider
+            alert('Local(host) provider connected');
+            setActiveAccount(web3.eth.accounts[0]);
+            setEtherAccounts(web3.eth.accounts);
+        }
+    });
+
+    document.getElementById("inputCheckVet").addEventListener('change', function() {
+        if(this.checked) {
+            document.getElementById("inputTextVetAddress").value = _activeAccount;
+            document.getElementById("inputTextVetAddress").setAttribute("disabled","disabled");
+        } else {
+            document.getElementById("inputTextVetAddress").removeAttribute("disabled");
+        }
+    });
+
+    window.addEventListener('activeAccountChanged', function(data) {
+        document.getElementById("inputTextVetAddress").value = data.detail
+    });
+
+    window.addEventListener('etherAccountsUpdated', function(data) {
+        addEntriesToSelect('inputGroupSelect01', data.detail);
+        addEntriesToSelect('inputGroupSelect02', data.detail);
+        addEntriesToSelect('inputGroupSelect03', data.detail);
+    });
+
+    function addItemToList(listObject, itemValue) {
+        let li = document.createElement("li");
+        li.appendChild(document.createTextNode(itemValue));
+        listObject.appendChild(li);
+    }
+
+    function addEntriesToSelect(select_id, entries) {
+        let select = document.getElementById(select_id);
+        for (let i = 0; i < entries.length; i++) {
+            let option = document.createElement("option");
+            option.text = entries[i];
+            select.add(option, i+1);
+        }
+    }
+
 </script>
 </body>
 </html>
