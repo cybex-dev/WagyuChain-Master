@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <title>Start</title>
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"
-            integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
+    <script src="js/web3.js"></script>
     <script src="js/wagyu_contract_helper.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/wagyuchain.css"/>
@@ -13,24 +12,24 @@
 <body>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <!-- Brand/logo -->
-    <a class="navbar-brand" href="index.html">WagyuChain</a>
+    <a class="navbar-brand nav-fill" href="index.html">WagyuChain</a>
 
     <!-- Links -->
     <ul class="navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" href="Abattoir.html">Abattoir</a>
+            <a class="nav-link" href="Abattoir.html" data-toggle="tab">Abattoir</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="Consumer.html">Consumer</a>
+            <a class="nav-link" href="Consumer.html" data-toggle="tab">Consumer</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="Farmer.html">Farmer</a>
+            <a class="nav-link" href="Farmer.html" data-toggle="tab">Farmer</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="Retailer.html">Retailer</a>
+            <a class="nav-link" href="Retailer.html" data-toggle="tab">Retailer</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="Vetinarian.html">Vetinarian</a>
+            <a class="nav-link" href="Vetinarian.html" data-toggle="tab">Vetinarian</a>
         </li>
     </ul>
     <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
@@ -60,29 +59,18 @@
                            onclick="deployContract();">
 </div>
 <script>
-    let web3 = null;
     window.addEventListener('load', function () {
-        if (typeof window.web3 !== 'undefined') {
-            web3 = new Web3(web3.currentProvider);
-            alert("Metamask Connected");
-        } else {
-            web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
-            if (!web3.isConnected()) {
-                alert('Cannot connected to local provider, is it running?');
-                return;
-            }
-        }
-
-        if(web3 === null) {
+        if (web3 === null) {
             $('#btnDeployContract').prop('value', 'Error');
             alert("Unable to deploy contract, see developer console.")
         } else {
             // contract deployed address
-            if(web3.eth.getCode(deployAddress) !== "0x") {
+            if (web3.eth.getCode(deployAddress) !== "0x") {
                 alert("Contract already deployed.");
                 $('#btnDeployContract').prop('value', 'Redeploy');
-            }
 
+            }
+            ;
         }
     });
 

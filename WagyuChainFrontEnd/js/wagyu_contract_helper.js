@@ -1,5 +1,19 @@
 let _activeAccount = "0x0";
 
+let web3 = null;
+
+window.addEventListener('load', function () {
+    if (typeof window.web3 !== 'undefined') {
+        web3 = new Web3(web3.currentProvider);
+        alert("Metamask Connected");
+    } else {
+        web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
+        if (!web3.isConnected()) {
+            alert('Cannot connected to local provider, is it running?');
+        }
+    }
+});
+
 let web3Contract = null;
 
 let min_gas = '6500000';
@@ -289,17 +303,23 @@ let abi = [{
 }];
 
 
-function initContract(web3) {
-    return web3.eth.contract(abi, deployAddress);
+function initContract() {
+    if (web3 == null) {
+        console.log("web3 is null");
+    }
+    web3Contract = web3.eth.contract(abi, deployAddress);
 }
 
 function getWeb3Contract() {
+    if (web3Contract === null) {
+        initContract();
+    }
     return web3Contract;
 }
 
 function setActiveAccount(newAccount) {
     _activeAccount = newAccount;
-    dispatchEvent(new CustomEvent('activeAccountChanged', { detail: newAccount }));
+    dispatchEvent(new CustomEvent('activeAccountChanged', {detail: newAccount}));
     populateAccountList();
 }
 
@@ -308,6 +328,10 @@ window.addEventListener('load', function () {
 });
 
 function populateAccountList() {
+    if (web3 == null) {
+        console.log("web3 is null");
+    }
+
     if (!document.getElementById("navbarProfiles")) {
         return;
     }
@@ -323,10 +347,12 @@ function populateAccountList() {
             a.classList.add("active");
         }
         a.href = "#";
-        a.addEventListener('click', function() {
+        a.addEventListener('click', function () {
             setActiveAccount(a.text);
         });
         a.text = account;
         profileDropdown.appendChild(a);
-    })
+    });
+
+    $('#activeAccountBalance').text("(ETH " + web3.eth.getBalance(_activeAccount).c[0] + ")");
 }

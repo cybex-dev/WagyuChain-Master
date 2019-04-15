@@ -37,7 +37,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link">
                     <i class="fab fa-user"></i><b>Account</b></a>
             </li>
             <li class="nav-item dropdown">
@@ -53,6 +53,9 @@
                         <!--<a class="dropdown-item" href="#">Add Account</a>-->
                     </div>
                 </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"><span id="activeAccountBalance"></span></a>
             </li>
         </ul>
     </div>
@@ -103,6 +106,33 @@
                                     class="btn btn-outline-secondary btn-dark" type="button"><span class="text-white">Auto-generate</span>
                             </button>
                         </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                       id="inputCheckIsMale"> Is Male Cow
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect04">Choose Male Parent</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect04">
+                            <option selected>Choose...</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect05">Choose Female Parent</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect05">
+                            <option selected>Choose...</option>
+                        </select>
                     </div>
 
                     <div class="input-group mb-3">
@@ -261,8 +291,8 @@
         </div>
     </div>
 </div>
+</body>
 <script>
-    let web3 = null;
     let contract = null;
     let _etherAccounts = [];
 
@@ -282,7 +312,7 @@
             addItemToList(document.getElementById("error_list"), "RFID Tag cannot be empty");
         }
 
-        let cowAddress = $('#inputTextCowRFIDTag').val();
+        let cowAddress = $('#inputTextNewAddress').val();
         if (cowAddress === "") {
             addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
         }
@@ -290,6 +320,16 @@
         let farmAddress = $('#inputGroupSelect02').val();
         if (farmAddress === "" || farmAddress === "Choose...") {
             addItemToList(document.getElementById("error_list"), "Invalid Farm Address");
+        }
+
+        let parentMale = $('#inputGroupSelect04').val();
+        if (farmAddress === "" || farmAddress === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Male Parent Address cannot be empty");
+        }
+
+        let parentFemale = $('#inputGroupSelect05').val();
+        if (farmAddress === "" || farmAddress === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Female Parent Address cannot be empty");
         }
 
         let vetAddress = $('#inputTextVetAddress').val();
@@ -322,6 +362,8 @@
             addItemToList(document.getElementById("error_list"), "Abattoir Address cannot be empty");
         }
 
+        let isMale = document.getElementById("inputCheckIsMale").checked;
+
         // Check if there are errors to display, then display them, else continue
         if (document.querySelectorAll("#error_list > li").length > 0) {
             console.log("Errors while adding cow.");
@@ -333,17 +375,18 @@
             // Submit transaction
             let contract = getWeb3Contract().at(deployAddress);
 
-            contract.methods.born().send({from: _activeAccount})
-                .on('transactionHash', (hash) => {
-                    console.log("Hash = " + hash);
-                })
-                .on('receipt', (receipt) => {
-                    console.log("receipt = " + receipt);
-                })
-                .on('confirmation', (confirmationNumber, receipt) => {
-                    console.log("confirmationNumber = " + confirmationNumber + "\nreceipt = " + receipt);
-                })
-                .on('error', console.error);
+            contract.born.sendTransaction(cowAddress, farmAddress, vetAddress, rfid, weiValue, [weight, height, length], isMale, [parentMale, parentFemale], abattoir, {
+                from: _activeAccount,
+                gas: 1000000,
+                gasPrice: 100
+            }, (error, result) => {
+                if (err) {
+                    alert('Unable to process transaction');
+                    console.log("Error = " + error);
+                } else {
+                    console.log("Cow added to blockchain ( " + result + ")");
+                }
+            });
         }
     };
 
@@ -398,25 +441,17 @@
     }
 
     window.addEventListener('load', function () {
-        if (typeof window.web3 !== 'undefined') {
-            web3 = new Web3(web3.currentProvider);
-            alert("Metamask Connected");
-        } else {
-            web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
-
-            // Get contract instance
-            if (web3.eth.getCode(deployAddress) === "0x") {
-                alert('No contract exists, please deploy one first to continue');
-                document.querySelectorAll("a.btn.btn-primary").forEach(btn => btn.onclick = false)
-            }
-            contract = web3.eth.contract(abi).at(deployAddress);
-
-            setActiveAccount(web3.eth.accounts[0]);
-            setEtherAccounts(web3.eth.accounts);
-
-            populateAccountList();
+        // Get contract instance
+        if (web3.eth.getCode(deployAddress) === "0x") {
+            alert('No contract exists, please deploy one first to continue');
+            document.querySelectorAll("a.btn.btn-primary").forEach(btn => btn.onclick = false)
         }
-        ;
+        contract = web3.eth.contract(abi).at(deployAddress);
+
+        setActiveAccount(web3.eth.accounts[0]);
+        setEtherAccounts(web3.eth.accounts);
+
+        populateAccountList();
     });
 
     document.getElementById("inputCheckVet").addEventListener('change', function () {
@@ -437,6 +472,8 @@
         addEntriesToSelect('inputGroupSelect01', data.detail);
         addEntriesToSelect('inputGroupSelect02', data.detail);
         addEntriesToSelect('inputGroupSelect03', data.detail);
+        addEntriesToSelect('inputGroupSelect04', data.detail);
+        addEntriesToSelect('inputGroupSelect05', data.detail);
     });
 
     function addItemToList(listObject, itemValue) {
@@ -455,5 +492,4 @@
     }
 
 </script>
-</body>
 </html>
