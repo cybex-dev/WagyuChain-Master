@@ -140,6 +140,7 @@
 
     window.addEventListener('etherAccountsUpdated', function (data) {
         addEntriesToSelect('inputGroupSelect01', data.detail);
+        addEntriesToSelect('inputGroupSelect02', data.detail);
     });
 
     function purchasePart() {
@@ -152,8 +153,8 @@
             addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
         }
 
-        let description = $('#inputPurchasePartId').val();
-        if (description === "") {
+        let partId = $('#inputPurchasePartId').val();
+        if (partId === "") {
             addItemToList(document.getElementById("error_list"), "Part ID cannot be empty");
         }
 
