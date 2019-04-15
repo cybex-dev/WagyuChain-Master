@@ -61,6 +61,7 @@
     </div>
 </nav>
 <div class="container-fluid">
+    <div id="alert-container"></div>
     <br/>
     <div class="card">
         <div class="card-body">
@@ -293,7 +294,6 @@
 </div>
 </body>
 <script>
-    let contract = null;
     let _etherAccounts = [];
 
     function setEtherAccounts(etherAccounts) {
@@ -372,17 +372,13 @@
             // Convert value to wei
             let weiValue = web3.toWei(ether, 'ether');
 
-            // Submit transaction
-            let contract = getWeb3Contract().at(deployAddress);
-
-            contract.born.sendTransaction(cowAddress, farmAddress, vetAddress, rfid, weiValue, [weight, height, length], isMale, [parentMale, parentFemale], abattoir, {
+            web3Contract.born.sendTransaction(cowAddress, farmAddress, vetAddress, rfid, weiValue, [weight, height, length], isMale, [parentMale, parentFemale], abattoir, {
                 from: _activeAccount,
                 gas: 1000000,
                 gasPrice: 100
             }, (error, result) => {
-                if (err) {
-                    alert('Unable to process transaction');
-                    console.log("Error = " + error);
+                if (error !== null) {
+                    alert(error);
                 } else {
                     console.log("Cow added to blockchain ( " + result + ")");
                 }
@@ -446,7 +442,7 @@
             alert('No contract exists, please deploy one first to continue');
             document.querySelectorAll("a.btn.btn-primary").forEach(btn => btn.onclick = false)
         }
-        contract = web3.eth.contract(abi).at(deployAddress);
+        getContractAtAddress();
 
         setActiveAccount(web3.eth.accounts[0]);
         setEtherAccounts(web3.eth.accounts);
