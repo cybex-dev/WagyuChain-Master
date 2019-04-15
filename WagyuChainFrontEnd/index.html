@@ -62,59 +62,51 @@
 <script>
     let web3 = null;
     window.addEventListener('load', function () {
-        web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
-        // if (typeof window.web3 === 'undefined') {
-        //     web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
-        //     // if (!web3.eth.currentProvider.connected) {
-        //     //     alert('Cannot connected to local provider, is it running?');
-        //     //     return;
-        //     // }
-        // }
-        //
-        // if(web3 === null) {
-        //     $('#btnDeployContract').prop('value', 'Error');
-        //     alert("Unable to deploy contract, see developer console.")
-        // } else {
-        //     // contract deployed address
-        //     if(web3.eth.getCode(deployAddress) !== "0x") {
-        //         alert("Contract already deployed.");
-        //         $('#btnDeployContract').prop('value', 'Already Deployed');
-        //         $('#btnDeployContract').prop('disabled', 'disabled');
-        //     }
-        //
-        // }
+        if (typeof window.web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+            alert("Metamask Connected");
+        } else {
+            web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
+            if (!web3.isConnected()) {
+                alert('Cannot connected to local provider, is it running?');
+                return;
+            }
+        }
+
+        if(web3 === null) {
+            $('#btnDeployContract').prop('value', 'Error');
+            alert("Unable to deploy contract, see developer console.")
+        } else {
+            // contract deployed address
+            if(web3.eth.getCode(deployAddress) !== "0x") {
+                alert("Contract already deployed.");
+                $('#btnDeployContract').prop('value', 'Redeploy');
+            }
+
+        }
     });
 
     function deployContract() {
-        let contract =
-            new web3.eth.Contract(abi)
-            .deploy({
-                data: byteCode,
-                arguments: []
-            })
-            .send({
-                from: fromAddress, // web3.eth.accounts[9] (Ganache Accounts - Index 9)
-                data: byteCode,
-                gas: min_gas
-            }, function (err, tHash) {
-                console.log(err);
-                console.log(tHash);
-            })
-            .on('transactionHash', (hash) => {
-                console.log("Hash = " + hash);
-            })
-            .on('receipt', (receipt) => {
-                console.log("receipt = " + receipt);
-            })
-            .on('confirmation', (confirmationNumber, receipt) => {
-                console.log("confirmationNumber = " + confirmationNumber + "\nreceipt = " + receipt);
-            })
-            .on('error', console.error)
-            .then((newContractInstance) => {
-                console.log(newContractInstance.options.address) // instance with the new contract address
-            });
-        contract.methods.isForSale("1234");
-    }
+        initContract(web3);
+        let wagyuchainContract = getWeb3Contract();
+        if (wagyuchainContract) {
+            wagyuchainContract.new(
+                {
+                    from: fromAddress, // web3.eth.accounts[9] (Ganache Accounts - Index 9)
+                    data: byteCode,
+                    gas: min_gas
+                }, function (e, contract) {
+                    console.log(e, contract);
+                    if (typeof contract.address !== 'undefined') {
+                        console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
+                        $('#btnDeployContract').prop('value', 'Redeploy');
+                    }
+                });
+        } else {
+            console.log("Web3 Contract is null, cannot deploy!");
+            alert('Web3 Contract is null, cannot deploy!');
+        }
+    };
 
 </script>
 </body>

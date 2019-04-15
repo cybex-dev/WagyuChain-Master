@@ -75,6 +75,7 @@
     <br/>
 </div>
 <script>
+    let contract = null;
     let web3 = null;
     window.addEventListener('load', function () {
         if (typeof window.web3 !== 'undefined') {
@@ -82,9 +83,13 @@
             alert("Metamask Connected");
         } else {
             web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
-            // No web 3 provider
-            console.log("Consider Metamask?");
-            alert('Local(host) provider connected');
+
+            // Get contract instance
+            if (web3.eth.getCode(deployAddress) === "0x"){
+                alert('No contract exists, please deploy one first to continue');
+                document.querySelectorAll("a.btn.btn-primary").forEach(btn => btn.onclick = false)
+            }
+            contract = web3.eth.contract(abi).at(deployAddress);
         };
     });
 

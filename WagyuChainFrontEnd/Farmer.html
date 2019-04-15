@@ -47,8 +47,10 @@
                         Select Account...
                     </button>
 
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">Add Account</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"
+                         id="navbarProfiles">
+                        <!--Add ether accounts here with template below-->
+                        <!--<a class="dropdown-item" href="#">Add Account</a>-->
                     </div>
                 </div>
             </li>
@@ -73,7 +75,8 @@
             <div class="collapse" id="inputGroup01">
                 <div class="card-body">
                     <h5 class="card-title">Create a blockchain entry for your cow</h5>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_alert_box" hidden>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_alert_box"
+                         hidden>
                         <strong>Errors</strong>
                         <ul id="error_list">
                         </ul>
@@ -85,16 +88,20 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Cow RFID Tag</span>
                         </div>
-                        <input maxlength="32" type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="inputTextCowRFIDTag">
+                        <input maxlength="32" type="text" class="form-control"
+                               aria-label="Amount (to the nearest dollar)" id="inputTextCowRFIDTag">
                     </div>
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">New Cow Address</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="inputTextNewAddress">
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
+                               id="inputTextNewAddress">
                         <div class="input-group-append">
-                            <button onclick="generateNewAddress('inputTextCowRFIDTag','inputTextNewAddress')" class="btn btn-outline-secondary btn-dark" type="button"><span class="text-white">Auto-generate</span></button>
+                            <button onclick="generateNewAddress('inputTextCowRFIDTag','inputTextNewAddress')"
+                                    class="btn btn-outline-secondary btn-dark" type="button"><span class="text-white">Auto-generate</span>
+                            </button>
                         </div>
                     </div>
 
@@ -110,11 +117,13 @@
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <div class="input-group-text">
-                                <input type="checkbox" aria-label="Checkbox for following text input" id="inputCheckVet">
+                                <input type="checkbox" aria-label="Checkbox for following text input"
+                                       id="inputCheckVet">
                             </div>
                             <span class="input-group-text">Vetinarian</span>
                         </div>
-                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="inputTextVetAddress">
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
+                               id="inputTextVetAddress">
                     </div>
 
                     <div class="input-group mb-3">
@@ -136,7 +145,8 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">Value (Ether)</span>
                         </div>
-                        <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" id="inputNumberEtherValue">
+                        <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
+                               id="inputNumberEtherValue">
                     </div>
 
                     <div class="input-group mb-3">
@@ -253,17 +263,12 @@
 </div>
 <script>
     let web3 = null;
-    let _activeAccount = "0x0";
+    let contract = null;
     let _etherAccounts = [];
 
     function setEtherAccounts(etherAccounts) {
         _etherAccounts = etherAccounts;
-        dispatchEvent(new CustomEvent('etherAccountsUpdated', { detail: etherAccounts }));
-    }
-
-    function setActiveAccount(newAccount) {
-        _activeAccount = newAccount;
-        dispatchEvent(new CustomEvent('activeAccountChanged', { detail: newAccount }));
+        dispatchEvent(new CustomEvent('etherAccountsUpdated', {detail: etherAccounts}));
     }
 
     function addCow() {
@@ -326,10 +331,9 @@
             let weiValue = web3.toWei(ether, 'ether');
 
             // Submit transaction
-            let contract = initContract(web3);
-            contract.at(deployAddress);
+            let contract = getWeb3Contract().at(deployAddress);
 
-            contract.methods.isForSale(weiValue).send({from: _activeAccount})
+            contract.methods.born().send({from: _activeAccount})
                 .on('transactionHash', (hash) => {
                     console.log("Hash = " + hash);
                 })
@@ -337,7 +341,7 @@
                     console.log("receipt = " + receipt);
                 })
                 .on('confirmation', (confirmationNumber, receipt) => {
-                    console.log("confirmationNumber = " + confirmationNumber + "\nreceipt = " + receipt );
+                    console.log("confirmationNumber = " + confirmationNumber + "\nreceipt = " + receipt);
                 })
                 .on('error', console.error);
         }
@@ -385,7 +389,7 @@
             alert('RFID Field cannot be empty');
         } else {
             web3.personal.newAccount(rfidValue, function (err, address) {
-                if(err) {
+                if (err) {
                     console.log(err);
                 }
                 document.getElementById(id).value = address;
@@ -394,29 +398,42 @@
     }
 
     window.addEventListener('load', function () {
-        if (typeof window.web3 === 'undefined') {
+        if (typeof window.web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+            alert("Metamask Connected");
+        } else {
             web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
-            // No web 3 provider
-            alert('Local(host) provider connected');
+
+            // Get contract instance
+            if (web3.eth.getCode(deployAddress) === "0x") {
+                alert('No contract exists, please deploy one first to continue');
+                document.querySelectorAll("a.btn.btn-primary").forEach(btn => btn.onclick = false)
+            }
+            contract = web3.eth.contract(abi).at(deployAddress);
+
             setActiveAccount(web3.eth.accounts[0]);
             setEtherAccounts(web3.eth.accounts);
+
+            populateAccountList();
         }
+        ;
     });
 
-    document.getElementById("inputCheckVet").addEventListener('change', function() {
-        if(this.checked) {
+    document.getElementById("inputCheckVet").addEventListener('change', function () {
+        if (this.checked) {
             document.getElementById("inputTextVetAddress").value = _activeAccount;
-            document.getElementById("inputTextVetAddress").setAttribute("disabled","disabled");
+            document.getElementById("inputTextVetAddress").setAttribute("disabled", "disabled");
         } else {
             document.getElementById("inputTextVetAddress").removeAttribute("disabled");
         }
     });
 
-    window.addEventListener('activeAccountChanged', function(data) {
-        document.getElementById("inputTextVetAddress").value = data.detail
+    window.addEventListener('activeAccountChanged', function (data) {
+        document.getElementById("inputTextVetAddress").value = data.detail;
+        document.querySelectorAll("#navbarProfiles")[0].parentElement.firstElementChild.textContent = data.detail;
     });
 
-    window.addEventListener('etherAccountsUpdated', function(data) {
+    window.addEventListener('etherAccountsUpdated', function (data) {
         addEntriesToSelect('inputGroupSelect01', data.detail);
         addEntriesToSelect('inputGroupSelect02', data.detail);
         addEntriesToSelect('inputGroupSelect03', data.detail);
@@ -433,7 +450,7 @@
         for (let i = 0; i < entries.length; i++) {
             let option = document.createElement("option");
             option.text = entries[i];
-            select.add(option, i+1);
+            select.add(option, i + 1);
         }
     }
 
