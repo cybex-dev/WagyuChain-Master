@@ -60,12 +60,12 @@ contract WagyuChain {
     address[] public cowIndex;
     mapping(address => Cow) public cowMapping;
 
-    event onBornEvent(address owner, address cowId);                                           //
-    event onCowTransferEvent(address cowId, address oldOwner, address newOwner);            //
-    event onRelocatedEvent(address cowId, address oldLocation, address newLocation);
-    event onStatusUpdate(address cowId, uint oldStatus, uint newStatus);
+    event onBornEvent(address owner, address cowAddress);                                           //
+    event onCowTransferEvent(address cowAddress, address oldOwner, address newOwner);            //
+    event onRelocatedEvent(address cowAddress, address oldLocation, address newLocation);
+    event onStatusUpdate(address cowAddress, uint oldStatus, uint newStatus);
     event onVeterinarianVisit(address cowAddress, string status);
-    event onSlaughteredEvent(address cowId, address abattoir, address slaughteredBy);
+    event onSlaughteredEvent(address cowAddress, address abattoir, address slaughteredBy);
     event onPackagedEvent(address cowAddress, uint partId, address packagedBy, uint packageStation);
     event onDistributedEvent(address cowAddress, uint partId, address recieveCentre);
     event onSoldEvent(address cowAddress, uint partId);
@@ -208,10 +208,11 @@ contract WagyuChain {
         cowMapping[cowAddress].vetinarian = newVetinarian;
     }
 
-    function transfer(address cowAddress, address newOwner) public payable existsCow(cowAddress) isCowForSale(cowAddress) hasEther(cowMapping[cowAddress].value) canTransfer(cowAddress) {
+    function transfer(address cowAddress) public payable existsCow(cowAddress) isCowForSale(cowAddress) hasEther(cowMapping[cowAddress].value) canTransfer(cowAddress) {
+        address oldOwner = cowMapping[cowAddress].owner;
         cowMapping[cowAddress].owner.call.value(cowMapping[cowAddress].value);
-        cowMapping[cowAddress].owner = newOwner;
-        emit onCowTransferEvent(cowAddress, msg.sender, newOwner);
+        cowMapping[cowAddress].owner = msg.sender;
+        emit onCowTransferEvent(cowAddress, oldOwner, msg.sender);
     }
 
     function isForSale(address cowAddress) public view existsCow(cowAddress) canTransfer(cowAddress) returns (bool) {

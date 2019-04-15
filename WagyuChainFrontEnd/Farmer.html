@@ -71,6 +71,15 @@
     <br/>
     <h4>Blockchain Actions</h4>
     <br/>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_alert_box"
+         hidden>
+        <strong>Errors</strong>
+        <ul id="error_list">
+        </ul>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div id="accordian">
         <div class="card">
             <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup01" style="cursor: pointer">
@@ -79,15 +88,6 @@
             <div class="collapse" id="inputGroup01">
                 <div class="card-body">
                     <h5 class="card-title">Create a blockchain entry for your cow</h5>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_alert_box"
-                         hidden>
-                        <strong>Errors</strong>
-                        <ul id="error_list">
-                        </ul>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Cow RFID Tag</span>
@@ -194,7 +194,7 @@
         </div>
         <br/>
         <div class="card">
-            <div class="card-header bg-light" data-toggle="collapse" href="#inputGroupSelect02" style="cursor: pointer">
+            <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup02" style="cursor: pointer">
                 Purchase Cow (Transfer)
             </div>
             <div class="collapse" id="inputGroup02">
@@ -219,8 +219,23 @@
             </div>
             <div class="collapse" id="inputGroup03">
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <p class="card-text">Transfer cow to new farm</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect09">Owned Cows</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect09">
+                            <option selected>Choose...</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect10">New Farm</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect10">
+                            <option selected>Choose...</option>
+                        </select>
+                    </div>
                     <a href="#" onclick="relocate()" class="btn btn-primary">Relocate</a>
                 </div>
             </div>
@@ -232,8 +247,29 @@
             </div>
             <div class="collapse" id="inputGroup04">
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <p class="card-text">Add cow meal</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect08">Cow</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect08">
+                            <option selected>Choose...</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Food Type</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
+                               id="inputTextFoodType">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Quantity (Kg)</span>
+                        </div>
+                        <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
+                               id="inputNumberFoodQuantity">
+                    </div>
                     <a href="#" onclick="addMeal()" class="btn btn-primary">Add Meal</a>
                 </div>
             </div>
@@ -245,8 +281,14 @@
             </div>
             <div class="collapse" id="inputGroup05">
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect11">New Farm</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect11">
+                            <option selected>Choose...</option>
+                        </select>
+                    </div>
                     <a href="#" onclick="toAbbottoir()" class="btn btn-primary">Slaughter Cow</a>
                 </div>
             </div>
@@ -258,9 +300,18 @@
             </div>
             <div class="collapse" id="inputGroup06">
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" onclick="toAbbottoir()" class="btn btn-primary">Update Market Status</a>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect12">Cow</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect12">
+                            <option selected>Choose...</option>
+                        </select>
+                    </div>
+                    <strong class="card-text">Current Market Status</strong><p class="card-text" id="inputCurrentMarketStatus"></p>
+                    <input type="checkbox" aria-label="Checkbox for following text input"
+                           id="inputCheck_CurrentMarketStatus"> Check to set for sale.<br/>
+                    <a href="#" onclick="setForSale()" class="btn btn-primary">Update Market Status</a>
                 </div>
             </div>
         </div>
@@ -271,9 +322,25 @@
             </div>
             <div class="collapse" id="inputGroup07">
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" onclick="toAbbottoir()" class="btn btn-primary">Update Vetinarian</a>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect13">Cow</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect13">
+                            <option selected>Choose...</option>
+                        </select>
+                    </div>
+                    <Strong class="card-text">Current Vetinarian is </Strong><p class="card-text" id="inputCurrentVetinarian"></p>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect14">New Farm</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect14">
+                            <option selected>Choose...</option>
+                        </select>
+                    </div>
+                    <a href="#" onclick="setVetinarian()" class="btn btn-primary">Update Vetinarian</a>
                 </div>
             </div>
         </div>
@@ -284,9 +351,23 @@
             </div>
             <div class="collapse" id="inputGroup08">
                 <div class="card-body">
-                    <h5 class="card-title">Special title treatment</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" onclick="toAbbottoir()" class="btn btn-primary">Update Status</a>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelect15">New Farm</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelect15">
+                            <option selected>Choose...</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text" for="inputGroupSelectStatus">Cow Status</label>
+                        </div>
+                        <select class="custom-select" id="inputGroupSelectStatus">
+                            <option selected>Choose...</option>
+                        </select>
+                    </div>
+                    <a href="#" onclick="setCowStatus()" class="btn btn-primary">Update Status</a>
                 </div>
             </div>
         </div>
@@ -294,13 +375,6 @@
 </div>
 </body>
 <script>
-    let _etherAccounts = [];
-
-    function setEtherAccounts(etherAccounts) {
-        _etherAccounts = etherAccounts;
-        dispatchEvent(new CustomEvent('etherAccountsUpdated', {detail: etherAccounts}));
-    }
-
     function addCow() {
         //Clear error list and set hidden
         $('#error_list').empty();
@@ -387,39 +461,238 @@
     };
 
     function relocate() {
+        //Clear error list and set hidden
+        $('#error_list').empty();
+        $('#error_alert_box').attr("hidden");
 
+        let cowAddress = $('#inputGroupSelect09').val();
+        if (cowAddress === "" || cowAddress === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
+        }
+
+        let newFarmAddress = $('#inputGroupSelect10').val();
+        if (newFarmAddress === "" || newFarmAddress === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Farm Address cannot be empty");
+        }
+
+        if (document.querySelectorAll("#error_list > li").length > 0) {
+            console.log("Errors while adding cow.");
+            $('#error_alert_box').removeAttr("hidden");
+        } else {
+            // Convert value to wei
+            let weiValue = web3.toWei(ether, 'ether');
+
+            web3Contract.relocate.sendTransaction(cowAddress, newFarmAddress, {
+                from: _activeAccount,
+                gas: 1000000,
+                gasPrice: 100
+            }, (error, result) => {
+                if (error !== null) {
+                    alert(error);
+                } else {
+                    console.log("Cow relocated ( " + result + ")");
+                }
+            });
+        }
     };
 
     function transfer() {
+        //Clear error list and set hidden
+        $('#error_list').empty();
+        $('#error_alert_box').attr("hidden");
 
+        let cowAddress = $('#inputGroupSelect13').val();
+        if (cowAddress === "" || cowAddress === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
+        }
+
+        let newVet = $('#inputGroupSelect14').val();
+        if (newVet === "" || newVet === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "New Vetinarian Address cannot be empty");
+        }
+
+        if (document.querySelectorAll("#error_list > li").length > 0) {
+            console.log("Errors while adding cow.");
+            $('#error_alert_box').removeAttr("hidden");
+        } else {
+
+            web3Contract.transfer.sendTransaction(cowAddress, farmAddress, vetAddress, rfid, weiValue, [weight, height, length], isMale, [parentMale, parentFemale], abattoir, {
+                from: _activeAccount,
+                gas: 1000000,
+                gasPrice: 100
+            }, (error, result) => {
+                if (error !== null) {
+                    alert(error);
+                } else {
+                    console.log("Cow added to blockchain ( " + result + ")");
+                }
+            });
+        }
     };
 
     function addMeal() {
+        //Clear error list and set hidden
+        $('#error_list').empty();
+        $('#error_alert_box').attr("hidden");
 
+        let cowAddress = $('#inputGroupSelect09').val();
+        if (cowAddress === "" || cowAddress === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
+        }
+
+        let foodType = $('#inputTextFoodType').val();
+        if (foodType === "") {
+            addItemToList(document.getElementById("error_list"), "Food type cannot be empty");
+        }
+
+        let foodQuantity = $('#inputNumberFoodQuantity').val();
+        if (foodQuantity === "" || foodQuantity === "0") {
+            addItemToList(document.getElementById("error_list"), "Food quantity cannot be empty and must be bigger than 0");
+        }
+
+        if (document.querySelectorAll("#error_list > li").length > 0) {
+            console.log("Errors while adding cow.");
+            $('#error_alert_box').removeAttr("hidden");
+        } else {
+            let id = 0;
+            web3Contract.mealReceived.sendTransaction(cowAddress, id, foodType, foodQuantity, {
+                from: _activeAccount,
+                gas: 1000000,
+                gasPrice: 100
+            }, (error, result) => {
+                if (error !== null) {
+                    alert(error);
+                } else {
+                    console.log("Cow's meal added ( " + result + ")");
+                }
+            });
+        }
     };
 
     function toAbbottoir() {
+        //Clear error list and set hidden
+        $('#error_list').empty();
+        $('#error_alert_box').attr("hidden");
 
+        let cowAddress = $('#inputGroupSelect11').val();
+        if (cowAddress === "" || cowAddress === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
+        }
+
+        if (document.querySelectorAll("#error_list > li").length > 0) {
+            console.log("Errors while adding cow.");
+            $('#error_alert_box').removeAttr("hidden");
+        } else {
+            web3Contract.sendToAbattoir.sendTransaction(cowAddress, {
+                from: _activeAccount,
+                gas: 1000000,
+                gasPrice: 100
+            }, (error, result) => {
+                if (error !== null) {
+                    alert(error);
+                } else {
+                    console.log("Cow sent to abattoir ( " + result + ")");
+                }
+            });
+        }
     };
 
     function setForSale() {
+        //Clear error list and set hidden
+        $('#error_list').empty();
+        $('#error_alert_box').attr("hidden");
 
+        let cowAddress = $('#inputGroupSelect12').val();
+        if (cowAddress === "" || cowAddress === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
+        }
+
+        let isForSale = document.getElementById("inputCheck_CurrentMarketStatus").checked;
+
+        if (document.querySelectorAll("#error_list > li").length > 0) {
+            console.log("Errors while adding cow.");
+            $('#error_alert_box').removeAttr("hidden");
+        } else {
+            web3Contract.setCowMarketStatus.sendTransaction(cowAddress, isForSale, {
+                from: _activeAccount,
+                gas: 1000000,
+                gasPrice: 100
+            }, (error, result) => {
+                if (error !== null) {
+                    alert(error);
+                } else {
+                    console.log("Cow Market Status set  ( " + result + ")");
+                }
+            });
+        }
     }
 
     function setVetinarian() {
+        //Clear error list and set hidden
+        $('#error_list').empty();
+        $('#error_alert_box').attr("hidden");
 
+        let cowAddress = $('#inputGroupSelect13').val();
+        if (cowAddress === "" || cowAddress === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
+        }
+
+        let newVet = $('#inputGroupSelect14').val();
+        if (newVet === "" || newVet === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "New Vetinarian Address cannot be empty");
+        }
+
+        if (document.querySelectorAll("#error_list > li").length > 0) {
+            console.log("Errors while adding cow.");
+            $('#error_alert_box').removeAttr("hidden");
+        } else {
+
+            web3Contract.setVetinarian.sendTransaction(cowAddress, newVet, {
+                from: _activeAccount,
+                gas: 1000000,
+                gasPrice: 100
+            }, (error, result) => {
+                if (error !== null) {
+                    alert(error);
+                } else {
+                    console.log("New Cow Vetinarian set ( " + result + ")");
+                }
+            });
+        }
     }
 
     function setCowStatus() {
+        //Clear error list and set hidden
+        $('#error_list').empty();
+        $('#error_alert_box').attr("hidden");
 
-    }
+        let cowAddress = $('#inputGroupSelect15').val();
+        if (cowAddress === "" || cowAddress === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
+        }
 
-    function getCowForSaleStatus() {
+        // add attribute ' value="1" '
+        let status = $('#inputGroupSelectStatus').val();
+        if (status === "" || status === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
+        }
 
-    }
-
-    function getAllCowsForsale() {
-
+        if (document.querySelectorAll("#error_list > li").length > 0) {
+            console.log("Errors while adding cow.");
+            $('#error_alert_box').removeAttr("hidden");
+        } else {
+            web3Contract.setStatus.sendTransaction(cowAddress, status, {
+                from: _activeAccount,
+                gas: 1000000,
+                gasPrice: 100
+            }, (error, result) => {
+                if (error !== null) {
+                    alert(error);
+                } else {
+                    console.log("Cow Market Status set  ( " + result + ")");
+                }
+            });
+        }
     }
 
     function generateNewAddress(rfid, id) {
@@ -436,18 +709,10 @@
         }
     }
 
-    window.addEventListener('load', function () {
-        // Get contract instance
-        if (web3.eth.getCode(deployAddress) === "0x") {
-            alert('No contract exists, please deploy one first to continue');
-            document.querySelectorAll("a.btn.btn-primary").forEach(btn => btn.onclick = false)
-        }
-        getContractAtAddress();
 
-        setActiveAccount(web3.eth.accounts[0]);
-        setEtherAccounts(web3.eth.accounts);
-
-        populateAccountList();
+    window.addEventListener('activeAccountChanged', function (data) {
+        document.getElementById("inputTextVetAddress").value = data.detail;
+        document.querySelectorAll("#navbarProfiles")[0].parentElement.firstElementChild.textContent = data.detail;
     });
 
     document.getElementById("inputCheckVet").addEventListener('change', function () {
@@ -459,33 +724,20 @@
         }
     });
 
-    window.addEventListener('activeAccountChanged', function (data) {
-        document.getElementById("inputTextVetAddress").value = data.detail;
-        document.querySelectorAll("#navbarProfiles")[0].parentElement.firstElementChild.textContent = data.detail;
-    });
-
     window.addEventListener('etherAccountsUpdated', function (data) {
         addEntriesToSelect('inputGroupSelect01', data.detail);
         addEntriesToSelect('inputGroupSelect02', data.detail);
         addEntriesToSelect('inputGroupSelect03', data.detail);
         addEntriesToSelect('inputGroupSelect04', data.detail);
         addEntriesToSelect('inputGroupSelect05', data.detail);
+        addEntriesToSelect('inputGroupSelect08', data.detail);
+        addEntriesToSelect('inputGroupSelect09', data.detail);
+        addEntriesToSelect('inputGroupSelect10', data.detail);
+        addEntriesToSelect('inputGroupSelect11', data.detail);
+        addEntriesToSelect('inputGroupSelect12', data.detail);
+        addEntriesToSelect('inputGroupSelect13', data.detail);
+        addEntriesToSelect('inputGroupSelect14', data.detail);
+        addEntriesToSelect('inputGroupSelect15', data.detail);
     });
-
-    function addItemToList(listObject, itemValue) {
-        let li = document.createElement("li");
-        li.appendChild(document.createTextNode(itemValue));
-        listObject.appendChild(li);
-    }
-
-    function addEntriesToSelect(select_id, entries) {
-        let select = document.getElementById(select_id);
-        for (let i = 0; i < entries.length; i++) {
-            let option = document.createElement("option");
-            option.text = entries[i];
-            select.add(option, i + 1);
-        }
-    }
-
 </script>
 </html>

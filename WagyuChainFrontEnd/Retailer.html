@@ -37,24 +37,31 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link">
                     <i class="fab fa-user"></i><b>Account</b></a>
             </li>
             <li class="nav-item dropdown">
                 <div class="dropdown show">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
                         Select Account...
                     </button>
 
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">Add Account</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"
+                         id="navbarProfiles">
+                        <!--Add ether accounts here with template below-->
+                        <!--<a class="dropdown-item" href="#">Add Account</a>-->
                     </div>
                 </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"><span id="activeAccountBalance"></span></a>
             </li>
         </ul>
     </div>
 </nav>
 <div class="container-fluid">
+    <div id="alert-container"></div>
     <br/>
     <div class="card">
         <div class="card-body">
@@ -62,25 +69,38 @@
         </div>
     </div>
     <br/>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_alert_box"
+         hidden>
+        <strong>Errors</strong>
+        <ul id="error_list">
+        </ul>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="card">
-        <div class="card-header bg-light">
+        <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup01" style="cursor: pointer">
             Purchase Parts
         </div>
-        <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" onclick="addCow()" class="btn btn-primary">Purchase</a>
+        <div class="collapse" id="inputGroup01">
+            <div class="card-body">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" onclick="addCow()" class="btn btn-primary">Purchase</a>
+            </div>
         </div>
     </div>
     <br/>
     <div class="card">
-        <div class="card-header bg-light">
+        <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup02" style="cursor: pointer">
             Set Part Value
         </div>
-        <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" onclick="addCow()" class="btn btn-primary">Set Value</a>
+        <div class="collapse" id="inputGroup02">
+            <div class="card-body">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" onclick="addCow()" class="btn btn-primary">Set Value</a>
+            </div>
         </div>
     </div>
     <br/>
@@ -96,13 +116,15 @@
             web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
 
             // Get contract instance
-            if (web3.eth.getCode(deployAddress) === "0x"){
+            if (web3.eth.getCode(deployAddress) === "0x") {
                 alert('No contract exists, please deploy one first to continue');
                 document.querySelectorAll("a.btn.btn-primary").forEach(btn => btn.onclick = false)
             }
             contract = web3.eth.contract(abi).at(deployAddress);
-        };
-    });;
+        }
+        ;
+    });
+    ;
 
     function transferPart() {
 

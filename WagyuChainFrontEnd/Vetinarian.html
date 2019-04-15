@@ -37,24 +37,31 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link">
                     <i class="fab fa-user"></i><b>Account</b></a>
             </li>
             <li class="nav-item dropdown">
                 <div class="dropdown show">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
                         Select Account...
                     </button>
 
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">Add Account</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"
+                         id="navbarProfiles">
+                        <!--Add ether accounts here with template below-->
+                        <!--<a class="dropdown-item" href="#">Add Account</a>-->
                     </div>
                 </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"><span id="activeAccountBalance"></span></a>
             </li>
         </ul>
     </div>
 </nav>
 <div class="container-fluid">
+    <div id="alert-container"></div>
     <br/>
     <div class="card">
         <div class="card-body">
@@ -62,40 +69,96 @@
         </div>
     </div>
     <br/>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_alert_box"
+         hidden>
+        <strong>Errors</strong>
+        <ul id="error_list">
+        </ul>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="card">
-        <div class="card-header bg-light">
+        <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup01" style="cursor: pointer">
             Add Checkup
         </div>
-        <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" onclick="addCow()" class="btn btn-primary">Add Checkup</a>
+        <div class="collapse" id="inputGroup01" >
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="inputGroupSelect01">Select Cow</label>
+                    </div>
+                    <select class="custom-select" id="inputGroupSelect01">
+                        <option selected>Choose...</option>
+                    </select>
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Animal Condition</span>
+                    </div>
+                    <input type="text" class="form-control" id="inputTextAnimalCondition">
+                </div>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Checkup Description</span>
+                    </div>
+                    <input type="text" class="form-control" id="inputTextVetCheckupDescription">
+                </div>
+                <a href="#" onclick="addCow()" class="btn btn-primary">Add Checkup</a>
+            </div>
         </div>
     </div>
     <br/>
 </div>
 <script>
-    let contract = null;
-    let web3 = null;
-    window.addEventListener('load', function () {
-        if (typeof window.web3 !== 'undefined') {
-            web3 = new Web3(web3.currentProvider);
-            alert("Metamask Connected");
-        } else {
-            web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
+    function addCheckup() {
+        //Clear error list and set hidden
+        $('#error_list').empty();
+        $('#error_alert_box').attr("hidden");
 
-            // Get contract instance
-            if (web3.eth.getCode(deployAddress) === "0x"){
-                alert('No contract exists, please deploy one first to continue');
-                document.querySelectorAll("a.btn.btn-primary").forEach(btn => btn.onclick = false)
-            }
-            contract = web3.eth.contract(abi).at(deployAddress);
-        };
+        let cowAddress = $('#inputGroupSelect01').val();
+        if (cowAddress === "" || cowAddress === "Choose...") {
+            addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
+        }
+
+        let condition = $('#inputTextAnimalCondition').val();
+        if (condition === "") {
+            addItemToList(document.getElementById("error_list"), "Animal condition field cannot be empty");
+        }
+
+        let description = $('#inputTextVetCheckupDescription').val();
+        if (description === "") {
+            addItemToList(document.getElementById("error_list"), "Checkup description cannot be empty");
+        }
+
+        if (document.querySelectorAll("#error_list > li").length > 0) {
+            console.log("Errors while adding cow.");
+            $('#error_alert_box').removeAttr("hidden");
+        } else {
+
+            let id = 0;
+            web3Contract.checkupReceived.sendTransaction(cowAddress, id, condition, description, {
+                from: _activeAccount,
+                gas: 1000000,
+                gasPrice: 100
+            }, (error, result) => {
+                if (error !== null) {
+                    alert(error);
+                } else {
+                    console.log("Cow's vetinary checkup added ( " + result + ")");
+                }
+            });
+        }
+    };
+
+    window.addEventListener('activeAccountChanged', function (data) {
+        document.getElementById("inputTextVetAddress").value = data.detail;
+        document.querySelectorAll("#navbarProfiles")[0].parentElement.firstElementChild.textContent = data.detail;
     });
 
-    function addCheckup() {
-
-    };
+    window.addEventListener('etherAccountsUpdated', function (data) {
+        addEntriesToSelect('inputGroupSelect01', data.detail);
+    });
 </script>
 </body>
 </html>
