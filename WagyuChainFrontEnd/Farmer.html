@@ -323,10 +323,11 @@
             $('#error_alert_box').removeAttr("hidden");
         } else {
             // Convert value to wei
-            let weiValue = ether * 1000000000000000000;
+            let weiValue = web3.toWei(ether, 'ether');
 
             // Submit transaction
-            let contract = getWeb3Contract();
+            let contract = initContract(web3);
+            contract.at(deployAddress);
 
             contract.methods.isForSale(weiValue).send({from: _activeAccount})
                 .on('transactionHash', (hash) => {

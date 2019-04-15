@@ -288,15 +288,5 @@ let abi = [{
 
 
 function initContract(web3) {
-    if (web3Contract === null) {
-        console.log("Creating contract");
-        web3Contract = web3.eth.contract(abi);
-    } else {
-        console.log("Contract already created");
-    }
+    return web3.eth.contract(abi, deployAddress);
 }
-
-function getWeb3Contract() {
-    return web3Contract;
-}
-

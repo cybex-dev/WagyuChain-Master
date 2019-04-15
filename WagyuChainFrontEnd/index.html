@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Start</title>
     <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
-    <script src="js/web3.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js" integrity="sha256-nWBTbvxhJgjslRyuAKJHK+XcZPlCnmIAAMixz6EefVk=" crossorigin="anonymous"></script>
     <script src="js/wagyu_contract_helper.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/wagyuchain.css"/>
@@ -60,36 +60,34 @@
 <script>
     let web3 = null;
     window.addEventListener('load', function () {
-        if (typeof window.web3 !== 'undefined') {
-            web3 = new Web3(web3.currentProvider);
-            alert("Metamask Connected");
-        } else {
-            web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
-            if (!web3.eth.currentProvider.connected) {
-                alert('Cannot connected to local provider, is it running?');
-                return;
-            }
-        }
-
-        if(web3 === null) {
-            $('#btnDeployContract').prop('value', 'Error');
-            alert("Unable to deploy contract, see developer console.")
-        } else {
-            // contract deployed address
-            if(web3.eth.getCode(deployAddress) !== "0x") {
-                alert("Contract already deployed.");
-                $('#btnDeployContract').prop('value', 'Already Deployed');
-                $('#btnDeployContract').prop('disabled', 'disabled');
-            }
-
-        }
+        web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
+        // if (typeof window.web3 === 'undefined') {
+        //     web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
+        //     // if (!web3.eth.currentProvider.connected) {
+        //     //     alert('Cannot connected to local provider, is it running?');
+        //     //     return;
+        //     // }
+        // }
+        //
+        // if(web3 === null) {
+        //     $('#btnDeployContract').prop('value', 'Error');
+        //     alert("Unable to deploy contract, see developer console.")
+        // } else {
+        //     // contract deployed address
+        //     if(web3.eth.getCode(deployAddress) !== "0x") {
+        //         alert("Contract already deployed.");
+        //         $('#btnDeployContract').prop('value', 'Already Deployed');
+        //         $('#btnDeployContract').prop('disabled', 'disabled');
+        //     }
+        //
+        // }
     });
 
     function deployContract() {
-        initContract(web3);
-        let wagyuchainContract = getWeb3Contract();
+        let contract = null;
+        let wagyuchainContract = new web3.eth.Contract(abi, deployAddress);
         if (wagyuchainContract) {
-            wagyuchainContract.new(
+            contract = wagyuchainContract.deploy(
                 {
                     from: fromAddress, // web3.eth.accounts[9] (Ganache Accounts - Index 9)
                     data: byteCode,
@@ -99,6 +97,18 @@
                     if (typeof contract.address !== 'undefined') {
                         console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
                     }
+
+                    contract.methods.isForSale(weiValue).send({from: _activeAccount})
+                        .on('transactionHash', (hash) => {
+                            console.log("Hash = " + hash);
+                        })
+                        .on('receipt', (receipt) => {
+                            console.log("receipt = " + receipt);
+                        })
+                        .on('confirmation', (confirmationNumber, receipt) => {
+                            console.log("confirmationNumber = " + confirmationNumber + "\nreceipt = " + receipt );
+                        })
+                        .on('error', console.error);
                 });
         } else {
             console.log("Web3 Contract is null, cannot deploy!");
