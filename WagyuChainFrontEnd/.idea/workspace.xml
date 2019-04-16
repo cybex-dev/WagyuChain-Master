@@ -6,6 +6,8 @@
       <change beforePath="$PROJECT_DIR$/Consumer.html" beforeDir="false" afterPath="$PROJECT_DIR$/Consumer.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Farmer.html" beforeDir="false" afterPath="$PROJECT_DIR$/Farmer.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Retailer.html" beforeDir="false" afterPath="$PROJECT_DIR$/Retailer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Vetinarian.html" beforeDir="false" afterPath="$PROJECT_DIR$/Vetinarian.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/wagyu_contract_helper.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/wagyu_contract_helper.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,11 +41,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/wagyu_contract_helper.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1089">
-              <caret line="251" column="38" selection-start-line="251" selection-start-column="38" selection-end-line="251" selection-end-column="38" />
+            <state relative-caret-position="438">
+              <caret line="228" column="25" lean-forward="true" selection-start-line="228" selection-start-column="25" selection-end-line="228" selection-end-column="25" />
               <folding>
                 <element signature="e#51347#51796#0" />
                 <element signature="e#49905#50354#0" />
@@ -63,8 +65,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Vetinarian.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="86" selection-start-line="86" selection-end-line="93" selection-end-column="22" />
+            <state relative-caret-position="509">
+              <caret line="139" column="17" lean-forward="true" selection-start-line="139" selection-start-column="17" selection-end-line="139" selection-end-column="17" />
               <folding>
                 <element signature="e#2817#2824#1" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -77,8 +79,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Consumer.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="164">
-              <caret line="87" column="53" lean-forward="true" selection-start-line="87" selection-start-column="53" selection-end-line="87" selection-end-column="53" />
+            <state relative-caret-position="471">
+              <caret line="140" column="69" selection-start-line="140" selection-start-column="69" selection-end-line="140" selection-end-column="69" />
               <folding>
                 <element signature="e#2815#2822#1" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -92,8 +94,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Retailer.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="152" column="21" selection-start-line="152" selection-start-column="21" selection-end-line="152" selection-end-column="21" />
+            <state relative-caret-position="395">
+              <caret line="116" column="74" lean-forward="true" selection-start-line="116" selection-start-column="74" selection-end-line="116" selection-end-column="74" />
               <folding>
                 <element signature="e#2815#2822#1" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -107,12 +109,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Abattoir.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="404">
-              <caret line="199" column="51" selection-start-line="199" selection-start-column="51" selection-end-line="199" selection-end-column="51" />
+            <state relative-caret-position="416">
+              <caret line="188" column="46" lean-forward="true" selection-start-line="188" selection-start-column="46" selection-end-line="188" selection-end-column="46" />
               <folding>
                 <element signature="e#2815#2822#1" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#div#4;n#div#0;n#body#0;n#html#0;n#!!top" />
                 <element signature="n#style#0;n#div#0;n#div#4;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#div#0;n#div#5;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="e#7223#7343#0" />
@@ -139,11 +140,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Farmer.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="215" column="26" lean-forward="true" selection-start-line="215" selection-start-column="26" selection-end-line="215" selection-end-column="26" />
+            <state relative-caret-position="555">
+              <caret line="727" column="69" selection-start-line="727" selection-start-column="69" selection-end-line="727" selection-end-column="69" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#div#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" />
@@ -165,15 +166,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>containe&quot;</find>
-      <find>checkbox</find>
-      <find>deploy</find>
-      <find>Purchase</find>
-      <find>Cows For S</find>
-      <find>Owned Cows</find>
-      <find>inputGrou</find>
-      <find>Relocate C</find>
-      <find>inputGroupSelect10</find>
       <find>New Farm</find>
       <find>inputGroupSelect06</find>
       <find>inputGroupSelect08</find>
@@ -189,12 +181,21 @@
       <find>set ve</find>
       <find>rfid</find>
       <find>descrip</find>
-      <find>number</find>
       <find>inputGroupSelect02</find>
-      <find>inputGroupSelect01</find>
       <find>inputGroupSelect03</find>
       <find>inputGroupSelect05</find>
+      <find>Generate</find>
+      <find>inputTextNewAddress</find>
+      <find>Butcher</find>
+      <find>Cow Add</find>
+      <find>inputGroupSelect01&quot;</find>
+      <find>inputGroupSelect01</find>
+      <find>Update Vet</find>
+      <find>Purchase</find>
+      <find>Part ID</find>
+      <find>number</find>
       <find>transfer(</find>
+      <find>getBal`</find>
     </findStrings>
     <replaceStrings>
       <replace>web3.min.js</replace>
@@ -217,13 +218,13 @@
         <option value="$PROJECT_DIR$/js/web3helper.js" />
         <option value="$PROJECT_DIR$/css/wagyuchain.css" />
         <option value="$PROJECT_DIR$/../contract/WagyuChain.sol" />
-        <option value="$PROJECT_DIR$/js/wagyu_contract_helper.js" />
         <option value="$PROJECT_DIR$/index.html" />
-        <option value="$PROJECT_DIR$/Vetinarian.html" />
+        <option value="$PROJECT_DIR$/Farmer.html" />
+        <option value="$PROJECT_DIR$/Abattoir.html" />
         <option value="$PROJECT_DIR$/Consumer.html" />
         <option value="$PROJECT_DIR$/Retailer.html" />
-        <option value="$PROJECT_DIR$/Abattoir.html" />
-        <option value="$PROJECT_DIR$/Farmer.html" />
+        <option value="$PROJECT_DIR$/Vetinarian.html" />
+        <option value="$PROJECT_DIR$/js/wagyu_contract_helper.js" />
       </list>
     </option>
   </component>
@@ -240,9 +241,9 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1920" />
-    <option name="width" value="2560" />
-    <option name="height" value="1080" />
+    <option name="y" value="24" />
+    <option name="width" value="1920" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -351,7 +352,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="79036000" />
+    <option name="totallyTimeSpent" value="82030000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="24" width="1920" height="1056" extended-state="6" />
@@ -412,25 +413,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/wagyu_contract_helper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1089">
-          <caret line="251" column="38" selection-start-line="251" selection-start-column="38" selection-end-line="251" selection-end-column="38" />
-          <folding>
-            <element signature="e#51347#51796#0" />
-            <element signature="e#49905#50354#0" />
-            <element signature="e#50390#50839#0" />
-            <element signature="e#50876#51325#0" />
-            <element signature="e#51361#51810#0" />
-            <element signature="e#51876#52325#0" />
-            <element signature="e#52331#52780#0" />
-            <element signature="e#52816#53265#0" />
-            <element signature="e#53301#53750#0" />
-            <element signature="e#215#222#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="294">
@@ -445,10 +427,42 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/web3.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="6706" column="4" selection-start-line="6706" selection-start-column="4" selection-end-line="6706" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Farmer.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="727" column="69" selection-start-line="727" selection-start-column="69" selection-end-line="727" selection-end-column="69" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#div#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Abattoir.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="188" column="46" lean-forward="true" selection-start-line="188" selection-start-column="46" selection-end-line="188" selection-end-column="46" />
+          <folding>
+            <element signature="e#2815#2822#1" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#4;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#5;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="e#7223#7343#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Consumer.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="87" column="53" lean-forward="true" selection-start-line="87" selection-start-column="53" selection-end-line="87" selection-end-column="53" />
+        <state relative-caret-position="471">
+          <caret line="140" column="69" selection-start-line="140" selection-start-column="69" selection-end-line="140" selection-end-column="69" />
           <folding>
             <element signature="e#2815#2822#1" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -458,44 +472,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Vetinarian.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="86" selection-start-line="86" selection-end-line="93" selection-end-column="22" />
-          <folding>
-            <element signature="e#2817#2824#1" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#4278#4398#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/web3.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="6706" column="4" selection-start-line="6706" selection-start-column="4" selection-end-line="6706" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Abattoir.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="404">
-          <caret line="199" column="51" selection-start-line="199" selection-start-column="51" selection-end-line="199" selection-end-column="51" />
-          <folding>
-            <element signature="e#2815#2822#1" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#div#4;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#div#0;n#div#4;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#5;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="e#7223#7343#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Retailer.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="152" column="21" selection-start-line="152" selection-start-column="21" selection-end-line="152" selection-end-column="21" />
+        <state relative-caret-position="395">
+          <caret line="116" column="74" lean-forward="true" selection-start-line="116" selection-start-column="74" selection-end-line="116" selection-end-column="74" />
           <folding>
             <element signature="e#2815#2822#1" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -505,13 +485,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Farmer.html">
+    <entry file="file://$PROJECT_DIR$/Vetinarian.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="215" column="26" lean-forward="true" selection-start-line="215" selection-start-column="26" selection-end-line="215" selection-end-column="26" />
+        <state relative-caret-position="509">
+          <caret line="139" column="17" lean-forward="true" selection-start-line="139" selection-start-column="17" selection-end-line="139" selection-end-column="17" />
           <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#div#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="e#2817#2824#1" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="e#4278#4398#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/wagyu_contract_helper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="438">
+          <caret line="228" column="25" lean-forward="true" selection-start-line="228" selection-start-column="25" selection-end-line="228" selection-end-column="25" />
+          <folding>
+            <element signature="e#51347#51796#0" />
+            <element signature="e#49905#50354#0" />
+            <element signature="e#50390#50839#0" />
+            <element signature="e#50876#51325#0" />
+            <element signature="e#51361#51810#0" />
+            <element signature="e#51876#52325#0" />
+            <element signature="e#52331#52780#0" />
+            <element signature="e#52816#53265#0" />
+            <element signature="e#53301#53750#0" />
+            <element signature="e#215#222#1" expanded="true" />
           </folding>
         </state>
       </provider>

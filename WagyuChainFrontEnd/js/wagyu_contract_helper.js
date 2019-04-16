@@ -214,7 +214,11 @@ function populateAccountList() {
         profileDropdown.appendChild(a);
     });
 
-    $('#activeAccountBalance').text("(ETH " + web3.eth.getBalance(_activeAccount).c[0] + ")");
+    if (web3.isAddress(_activeAccount)) {
+        $('#activeAccountBalance').text("(ETH " + web3.eth.getBalance(_activeAccount).c[0] + ")");
+    } else {
+        $('#activeAccountBalance').text("(ETH ???)");
+    }
 }
 
 function createAlertHtml(type, title, text) {
@@ -234,6 +238,13 @@ function addEntriesToSelect(select_id, entries) {
         select.add(option, i + 1);
     }
 };
+
+function getCowMapping() {
+    web3Contract.cowMapping.call(function(err, res){
+        console.log("Err = " + err);
+        console.log("Res = " + res);
+    });
+}
 
 function addItemToList(listObject, itemValue) {
     let li = document.createElement("li");

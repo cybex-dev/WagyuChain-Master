@@ -334,7 +334,7 @@
 
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupSelect14">New Farm</label>
+                            <label class="input-group-text" for="inputGroupSelect14">New Vetinarian</label>
                         </div>
                         <select class="custom-select" id="inputGroupSelect14">
                             <option selected>Choose...</option>
@@ -353,7 +353,7 @@
                 <div class="card-body">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <label class="input-group-text" for="inputGroupSelect15">New Farm</label>
+                            <label class="input-group-text" for="inputGroupSelect15">Cow</label>
                         </div>
                         <select class="custom-select" id="inputGroupSelect15">
                             <option selected>Choose...</option>
@@ -365,6 +365,12 @@
                         </div>
                         <select class="custom-select" id="inputGroupSelectStatus">
                             <option selected>Choose...</option>
+                            <option value="0">Calf</option>
+                            <option value="1">Adult</option>
+                            <option value="2">Diseased</option>
+                            <option value="3">Dead</option>
+                            <option value="4">Slaughter Ready</option>
+                            <option value="5">Slaughtered</option>
                         </select>
                     </div>
                     <a href="#" onclick="setCowStatus()" class="btn btn-primary">Update Status</a>
@@ -506,17 +512,12 @@
             addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
         }
 
-        let newVet = $('#inputGroupSelect14').val();
-        if (newVet === "" || newVet === "Choose...") {
-            addItemToList(document.getElementById("error_list"), "New Vetinarian Address cannot be empty");
-        }
-
         if (document.querySelectorAll("#error_list > li").length > 0) {
             console.log("Errors while adding cow.");
             $('#error_alert_box').removeAttr("hidden");
         } else {
 
-            web3Contract.transfer.sendTransaction(cowAddress, farmAddress, vetAddress, rfid, weiValue, [weight, height, length], isMale, [parentMale, parentFemale], abattoir, {
+            web3Contract.transfer.sendTransaction(cowAddress, {
                 from: _activeAccount,
                 gas: 1000000,
                 gasPrice: 100
@@ -725,19 +726,9 @@
     });
 
     window.addEventListener('etherAccountsUpdated', function (data) {
-        addEntriesToSelect('inputGroupSelect01', data.detail);
-        addEntriesToSelect('inputGroupSelect02', data.detail);
-        addEntriesToSelect('inputGroupSelect03', data.detail);
-        addEntriesToSelect('inputGroupSelect04', data.detail);
-        addEntriesToSelect('inputGroupSelect05', data.detail);
-        addEntriesToSelect('inputGroupSelect08', data.detail);
-        addEntriesToSelect('inputGroupSelect09', data.detail);
         addEntriesToSelect('inputGroupSelect10', data.detail);
         addEntriesToSelect('inputGroupSelect11', data.detail);
-        addEntriesToSelect('inputGroupSelect12', data.detail);
-        addEntriesToSelect('inputGroupSelect13', data.detail);
         addEntriesToSelect('inputGroupSelect14', data.detail);
-        addEntriesToSelect('inputGroupSelect15', data.detail);
     });
 </script>
 </html>

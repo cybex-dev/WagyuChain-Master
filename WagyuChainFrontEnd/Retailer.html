@@ -128,7 +128,7 @@
                 <Strong class="card-text">Current Part price is </Strong><p class="card-text" id="inputCurrentPartPrice"></p>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">Part ID</span>
+                        <span class="input-group-text">New Price</span>
                     </div>
                     <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
                            id="inputPurchaseNewPartValue">
@@ -146,8 +146,6 @@
     });
 
     window.addEventListener('etherAccountsUpdated', function (data) {
-        addEntriesToSelect('inputGroupSelect01', data.detail);
-        addEntriesToSelect('inputGroupSelect02', data.detail);
     });
 
     function transferPart() {
