@@ -33,6 +33,9 @@
         <li class="nav-item">
             <a class="nav-link" href="Vetinarian.html">Vetinarian</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link"><strong class="alert alert-danger" id="web3provider_connection">Not Connected to Web3 Provider</strong></a>
+        </li>
     </ul>
     <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
         <ul class="navbar-nav ml-auto">
@@ -63,135 +66,14 @@
 <div class="container-fluid">
     <div id="alert-container"></div>
     <br/>
-    <div class="card">
-        <div class="card-body">
-            <h2>Consumer Menu</h2>
-        </div>
-    </div>
-    <br/>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="error_alert_box"
-         hidden>
-        <strong>Errors</strong>
-        <ul id="error_list">
-        </ul>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="card">
-        <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup01" style="cursor: pointer">
-            Purchase Meat
-        </div>
-        <div class="collapse" id="inputGroup01">
-            <div class="card-body">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="inputGroupSelect01">Cow</label>
-                    </div>
-                    <select class="custom-select" id="inputGroupSelect01">
-                        <option selected>Choose...</option>
-                    </select>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Part ID</span>
-                    </div>
-                    <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
-                           id="inputPurchasePartId">
-                </div>
-                <a href="#" onclick="purchasePart()" class="btn btn-primary">Purchase</a>
-            </div>
-        </div>
-    </div>
-    <br/>
-    <div class="card">
-        <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup02" style="cursor: pointer">
-            View Part History
-        </div>
 
-        <div class="collapse" id="inputGroup02">
-            <div class="card-body">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <label class="input-group-text" for="inputGroupSelect02">Cow</label>
-                    </div>
-                    <select class="custom-select" id="inputGroupSelect02">
-                        <option selected>Choose...</option>
-                    </select>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Part ID</span>
-                    </div>
-                    <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
-                           id="inputViewPartIdHistory">
-                </div>
-                <a href="#" onclick="viewPartHistory()" class="btn btn-primary">View</a>
-            </div>
-        </div>
-    </div>
-    <br/>
 </div>
 <script>
-    window.addEventListener('activeAccountChanged', function (data) {
-        document.getElementById("inputTextVetAddress").value = data.detail;
-        document.querySelectorAll("#navbarProfiles")[0].parentElement.firstElementChild.textContent = data.detail;
-    });
 
     window.addEventListener('etherAccountsUpdated', function (data) {
     });
 
-    function purchasePart() {
-        //Clear error list and set hidden
-        $('#error_list').empty();
-        $('#error_alert_box').attr("hidden");
 
-        let cowAddress = $('#inputGroupSelect01').val();
-        if (cowAddress === "" || cowAddress === "Choose...") {
-            addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
-        }
-
-        let partId = $('#inputPurchasePartId').val();
-        if (partId === "") {
-            addItemToList(document.getElementById("error_list"), "Part ID cannot be empty");
-        }
-
-        if (document.querySelectorAll("#error_list > li").length > 0) {
-            console.log("Errors while adding cow.");
-            $('#error_alert_box').removeAttr("hidden");
-        } else {
-
-            web3Contract.buyPart.sendTransaction(cowAddress, partId, _activeAccount, {
-                from: _activeAccount,
-                gas: 1000000,
-                gasPrice: 100
-            }, (error, result) => {
-                if (error !== null) {
-                    alert(error);
-                } else {
-                    console.log("Purchased a Wagyu cow part ( " + result + ")");
-                }
-            });
-        }
-    };
-
-    function viewPartHistory() {
-        //Clear error list and set hidden
-        $('#error_list').empty();
-        $('#error_alert_box').attr("hidden");
-
-        let cowAddress = $('#inputGroupSelect02').val();
-        if (cowAddress === "" || cowAddress === "Choose...") {
-            addItemToList(document.getElementById("error_list"), "Cow Address cannot be empty");
-        }
-
-        let partId = $('#inputViewPartIdHistory').val();
-        if (partId === "") {
-            addItemToList(document.getElementById("error_list"), "Part Id cannot be empty");
-        }
-
-        updateTable(cowAddress, partId);
-    }
 </script>
 </body>
 </html>
