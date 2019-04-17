@@ -271,4 +271,20 @@ contract WagyuChain {
     function setPartValue(address cowAddress, uint partId, uint newValue) public isCowsOwner(cowAddress) existsPart(cowAddress, partId) {
         cowMapping[cowAddress].parts[partId].value = newValue;
     }
+
+    function getNumberOfParts(address cowAddress) public view existsCow(cowAddress) returns(uint) {
+        return cowMapping[cowAddress].partsIndex.length;
+    }
+
+    function getNumberOfCheckups(address cowAddress) public view existsCow(cowAddress) returns(uint) {
+        return cowMapping[cowAddress].checkupIndex.length;
+    }
+
+    function getNumberOfMeals(address cowAddress) public view existsCow(cowAddress) returns(uint) {
+        return cowMapping[cowAddress].mealsIndex.length;
+    }
+
+    function getNumberOfCows() public view returns(uint) {
+        return cowIndex.length;
+    }
 }
