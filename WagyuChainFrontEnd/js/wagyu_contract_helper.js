@@ -21,6 +21,20 @@ window.addEventListener('load', function () {
         .removeClass("alert-danger")
         .addClass("alert-success");
 
+    // add navlink a tag events to hide account selector when on index tab
+    document.getElementById("navbarSupportedContent-4").style.setProperty('display', 'none', 'important');
+    document.querySelectorAll('ul.nav.navbar-nav > .nav-item > a.nav-link').forEach(function (item) {
+        item.addEventListener('click', function (item2) {
+            let arr = item2.target.href.match("#index");
+            if (arr && arr.length === 1) {
+                document.getElementById("navbarSupportedContent-4").style.setProperty('display', 'none', 'important');
+                checkContractExists(deployAddress);
+            } else {
+                document.getElementById("navbarSupportedContent-4").style.setProperty('display', '', 'important');
+            }
+        });
+    });
+    populateAccountList();
 });
 
 let web3Contract = null;
@@ -327,7 +341,7 @@ function initContract() {
     if (web3 == null) {
         console.log("web3 is null");
     }
-    web3Contract = web3.eth.contract(abi, deployAddress);
+    web3Contract = web3.eth.contract(abi);
 }
 
 function getWeb3Contract() {
@@ -347,7 +361,7 @@ function initEventHooks() {
             if (!error) {
                 var parent = document.getElementById("alert-container");
                 if (parent) {
-                    parent.innerHTML += createAlertHtml("success", "Cow Born", "New cow added to blockchain at address (" + result.address + ")");
+                    parent.innerHTML += createAlertHtml("success", "Event: Cow Born", "New cow added to blockchain at address (" + result.address + ")");
                 }
             } else
                 console.error(error);
@@ -358,7 +372,7 @@ function initEventHooks() {
             if (!error) {
                 var parent = document.getElementById("alert-container");
                 if (parent) {
-                    parent.innerHTML += createAlertHtml("success", "Cow Transferred", "Cow Transferred to (" + result.address + ")");
+                    parent.innerHTML += createAlertHtml("success", "Event: Cow Transferred", "Cow Transferred to (" + result.address + ")");
                 }
             } else
                 console.error(error);
@@ -369,7 +383,7 @@ function initEventHooks() {
             if (!error) {
                 var parent = document.getElementById("alert-container");
                 if (parent) {
-                    parent.innerHTML += createAlertHtml("success", "Cow Relocated", "Cow relocated to new farm (" + result.address + ")");
+                    parent.innerHTML += createAlertHtml("success", "Event: Cow Relocated", "Cow relocated to new farm (" + result.address + ")");
                 }
             } else
                 console.error(error);
@@ -380,7 +394,7 @@ function initEventHooks() {
             if (!error) {
                 var parent = document.getElementById("alert-container");
                 if (parent) {
-                    parent.innerHTML += createAlertHtml("success", "Status Update", "Cow's status has been updated (" + result.address + ")");
+                    parent.innerHTML += createAlertHtml("success", "Event: Status Update", "Cow's status has been updated (" + result.address + ")");
                 }
             } else
                 console.error(error);
@@ -391,7 +405,7 @@ function initEventHooks() {
             if (!error) {
                 var parent = document.getElementById("alert-container");
                 if (parent) {
-                    parent.innerHTML += createAlertHtml("success", "Vetinarian Visit", "New vetinarian checkup added (" + result.address + ")");
+                    parent.innerHTML += createAlertHtml("success", "Event: Vetinarian Visit", "New vetinarian checkup added (" + result.address + ")");
                 }
             } else
                 console.error(error);
@@ -402,7 +416,7 @@ function initEventHooks() {
             if (!error) {
                 var parent = document.getElementById("alert-container");
                 if (parent) {
-                    parent.innerHTML += createAlertHtml("success", "Slaughter Event", "Cow sent to abottoir for processing (" + result.address + ")");
+                    parent.innerHTML += createAlertHtml("success", "Event: Slaughter Event", "Cow sent to abottoir for processing (" + result.address + ")");
                 }
             } else
                 console.error(error);
@@ -413,7 +427,7 @@ function initEventHooks() {
             if (!error) {
                 var parent = document.getElementById("alert-container");
                 if (parent) {
-                    parent.innerHTML += createAlertHtml("success", "Wrap it up", "Cow parts being packaged for distribution (" + result.address + ")");
+                    parent.innerHTML += createAlertHtml("success", "Event: Part Packaged", "Cow parts being packaged for distribution (" + result.address + ")");
                 }
             } else
                 console.error(error);
@@ -424,7 +438,7 @@ function initEventHooks() {
             if (!error) {
                 var parent = document.getElementById("alert-container");
                 if (parent) {
-                    parent.innerHTML += createAlertHtml("success", "Parts distributed", "Cow parts distributed to buyer (" + result.address + ")");
+                    parent.innerHTML += createAlertHtml("success", "Event: Parts distributed", "Cow parts distributed to buyer (" + result.address + ")");
                 }
             } else
                 console.error(error);
@@ -435,7 +449,7 @@ function initEventHooks() {
             if (!error) {
                 var parent = document.getElementById("alert-container");
                 if (parent) {
-                    parent.innerHTML += createAlertHtml("success", "Part Sale", "Cow part sold to buyer (" + result.address + ")");
+                    parent.innerHTML += createAlertHtml("success", "Event: Part Sold", "Cow part sold to buyer (" + result.address + ")");
                 }
             } else
                 console.error(error);
@@ -446,7 +460,7 @@ function initEventHooks() {
             if (!error) {
                 var parent = document.getElementById("alert-container");
                 if (parent) {
-                    parent.innerHTML += createAlertHtml("success", "Cow Sale", "Cow market status changed (" + result.address + ")");
+                    parent.innerHTML += createAlertHtml("success", "Event: Cow Market Status", "Cow market status changed (" + result.address + ")");
                 }
             } else
                 console.error(error);
@@ -461,26 +475,14 @@ function setActiveAccount(newAccount) {
 }
 
 function getContractAtAddress() {
+    if (!deployAddress || deployAddress === "") {
+        console.log("Deploy Address empty, no contract available");
+        return null;
+    }
     web3Contract = getWeb3Contract().at(deployAddress);
     initEventHooks();
     return web3Contract;
 }
-
-window.addEventListener('load', function () {
-    // add navlink a tag events to hide account selector when on index tab
-    document.getElementById("navbarSupportedContent-4").style.setProperty('display', 'none', 'important');
-    document.querySelectorAll('ul.nav.navbar-nav > .nav-item > a.nav-link').forEach(function (item) {
-        item.addEventListener('click', function (item2) {
-            let arr = item2.target.href.match("#index");
-            if (arr && arr.length === 1) {
-                document.getElementById("navbarSupportedContent-4").style.setProperty('display', 'none', 'important');
-            } else {
-                document.getElementById("navbarSupportedContent-4").style.setProperty('display', '', 'important');
-            }
-        });
-    });
-    populateAccountList();
-});
 
 function populateAccountList() {
     if (web3 == null) {
@@ -510,9 +512,9 @@ function populateAccountList() {
     });
 
     if (web3.isAddress(_activeAccount)) {
-        $('#activeAccountBalance').text("(ETH " + web3.eth.getBalance(_activeAccount).c[0] + ")");
+        $('#activeAccountBalance').text(" " + web3.fromWei(web3.eth.getBalance(_activeAccount).toString(), 'ether'));
     } else {
-        $('#activeAccountBalance').text("(ETH ???)");
+        $('#activeAccountBalance').text(" ???");
     }
 }
 
@@ -532,6 +534,16 @@ function addEntriesToSelect(select_id, entries) {
         option.text = entries[i];
         select.add(option, i + 1);
     }
+};
+
+function addEntryToSelect(select_id, entry, selected) {
+    let select = document.getElementById(select_id);
+    let option = document.createElement("option");
+    option.text = entry;
+    if(selected) {
+        option.setAttribute("selected", "selected");
+    }
+    select.add(option, 0);
 };
 
 function getCowMapping() {
@@ -555,7 +567,6 @@ window.addEventListener('load', function () {
     getContractAtAddress();
 
     setActiveAccount(web3.eth.accounts[0] || _activeAccount);
-    deployAddress = web3.eth.accounts[9];
     setEtherAccounts(web3.eth.accounts);
 
     populateAccountList();
@@ -577,11 +588,5 @@ function validAddress(address) {
 }
 
 function generateNewAddress(password) {
-    web3.personal.newAccount(password, function (err, address) {
-        if (err) {
-            console.log(err);
-            return '0x'
-        }
-        return address;
-    });
+    return web3.personal.newAccount(password);
 }

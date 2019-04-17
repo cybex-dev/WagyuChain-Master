@@ -9,11 +9,11 @@
     <script src="js/wagyu_contract_helper.js"></script>
     <link rel="stylesheet" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/wagyuchain.css"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 </head>
 <body>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-    <!-- Brand/logo -->
-
     <!-- Links -->
     <ul class="nav navbar-nav">
         <li class="nav-item">
@@ -42,8 +42,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link">
-                    <i class="fab fa-user"></i><b>Account</b></a>
+                <a class="nav-link"><b>Account</b></a>
             </li>
             <li class="nav-item dropdown">
                 <div class="dropdown show">
@@ -60,7 +59,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link"><span id="activeAccountBalance"></span></a>
+                <a class="nav-link"><i class="fab fa-ethereum"></i><span id="activeAccountBalance"></span></a>
             </li>
         </ul>
     </div>
@@ -79,7 +78,8 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">Select Contract Owner Address</h5>
-                    <p class="card-text">This is the address which will be used as the contract owner. The contract owner has 'admin' privileges in the contract. </p>
+                    <p class="card-text">This is the address which will be used as the contract owner. The contract
+                        owner has 'admin' privileges in the contract. </p>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="ownerAddress">Addresses</label>
@@ -266,7 +266,8 @@
                 </button>
             </div>
             <div class="card">
-                <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup01_Consumer" style="cursor: pointer">
+                <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup01_Consumer"
+                     style="cursor: pointer">
                     Purchase Meat
                 </div>
                 <div class="collapse" id="inputGroup01_Consumer">
@@ -292,7 +293,8 @@
             </div>
             <br/>
             <div class="card">
-                <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup02_Consumer" style="cursor: pointer">
+                <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup02_Consumer"
+                     style="cursor: pointer">
                     View Part History
                 </div>
 
@@ -340,7 +342,8 @@
             </div>
             <div id="accordian">
                 <div class="card">
-                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup01_Farmer" style="cursor: pointer">
+                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup01_Farmer"
+                         style="cursor: pointer">
                         Add Cow
                     </div>
                     <div class="collapse" id="inputGroup01_Farmer">
@@ -362,7 +365,8 @@
                                        id="inputTextNewAddress">
                                 <div class="input-group-append">
                                     <button onclick="$('#inputTextNewAddress').val(generateNewAddress($('#inputTextCowRFIDTag_Farmer').val()))"
-                                            class="btn btn-outline-secondary btn-dark" type="button"><span class="text-white">Auto-generate</span>
+                                            class="btn btn-outline-secondary btn-dark" type="button"><span
+                                            class="text-white">Auto-generate</span>
                                     </button>
                                 </div>
                             </div>
@@ -378,20 +382,42 @@
 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <label class="input-group-text" for="inputGroupSelect04_Farmer">Choose Male Parent</label>
+                                    <div class="input-group-text">
+                                        <input type="checkbox" aria-label="Checkbox for following text input" checked
+                                               id="inputCheckNoValidParentMale">
+                                    </div>
+                                    <label class="input-group-text" for="inputGroupSelect04_Farmer">Choose Male
+                                        Parent</label>
                                 </div>
                                 <select class="custom-select" id="inputGroupSelect04_Farmer">
                                     <option selected>Choose...</option>
                                 </select>
+                                <div class="input-group-append">
+                                    <button onclick="addEntryToSelect('inputGroupSelect04_Farmer', generateNewAddress($('#inputTextNewAddress').val()), true)"
+                                            class="btn btn-outline-secondary btn-dark" type="button"><span
+                                            class="text-white">Auto-generate</span>
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <label class="input-group-text" for="inputGroupSelect05_Farmer">Choose Female Parent</label>
+                                    <div class="input-group-text">
+                                        <input type="checkbox" aria-label="Checkbox for following text input" checked
+                                               id="inputCheckNoValidParentFemale">
+                                    </div>
+                                    <label class="input-group-text" for="inputGroupSelect05_Farmer">Choose Female
+                                        Parent</label>
                                 </div>
                                 <select class="custom-select" id="inputGroupSelect05_Farmer">
                                     <option selected>Choose...</option>
                                 </select>
+                                <div class="input-group-append">
+                                    <button onclick="addEntryToSelect('inputGroupSelect05_Farmer', generateNewAddress($('#inputTextNewAddress').val()), true)"
+                                            class="btn btn-outline-secondary btn-dark" type="button"><span
+                                            class="text-white">Auto-generate</span>
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="input-group mb-3">
@@ -401,18 +427,31 @@
                                 <select class="custom-select" id="inputGroupSelect02_Farmer">
                                     <option selected>Choose...</option>
                                 </select>
+                                <div class="input-group-append">
+                                    <button onclick="addEntryToSelect('inputGroupSelect02_Farmer', generateNewAddress(_activeAccount), true)"
+                                            class="btn btn-outline-secondary btn-dark" type="button"><span
+                                            class="text-white">Auto-generate</span>
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
-                                        <input type="checkbox" aria-label="Checkbox for following text input"
+                                        <input type="checkbox" aria-label="Checkbox for following text input" checked
                                                id="inputCheckVet">
                                     </div>
                                     <span class="input-group-text">Vetinarian</span>
                                 </div>
-                                <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
-                                       id="inputTextVetAddress">
+                                <select class="custom-select" id="inputTextVetAddress">
+                                    <option selected>Choose...</option>
+                                </select>
+                                <div class="input-group-append">
+                                    <button onclick="addEntryToSelect('inputTextVetAddress', generateNewAddress(_activeAccount), true)"
+                                            class="btn btn-outline-secondary btn-dark" type="button"><span
+                                            class="text-white">Auto-generate</span>
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="input-group mb-3">
@@ -445,6 +484,12 @@
                                 <select class="custom-select" id="inputGroupSelect03_Farmer">
                                     <option selected>Choose...</option>
                                 </select>
+                                <div class="input-group-append">
+                                    <button onclick="addEntryToSelect('inputGroupSelect03_Farmer', generateNewAddress(_activeAccount), true)"
+                                            class="btn btn-outline-secondary btn-dark" type="button"><span
+                                            class="text-white">Auto-generate</span>
+                                    </button>
+                                </div>
                             </div>
                             <a href="#" onclick="addCow()" class="btn btn-primary">Add New Cow</a>
                         </div>
@@ -452,7 +497,8 @@
                 </div>
                 <br/>
                 <div class="card">
-                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup02_Farmer" style="cursor: pointer">
+                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup02_Farmer"
+                         style="cursor: pointer">
                         Purchase Cow (Transfer)
                     </div>
                     <div class="collapse" id="inputGroup02_Farmer">
@@ -460,7 +506,8 @@
                             <p class="card-text">Purchase a cow by selecting the cow below.</p>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <label class="input-group-text" for="inputGroupSelect01_Farmer">Cows for Sale</label>
+                                    <label class="input-group-text" for="inputGroupSelect01_Farmer">Cows for
+                                        Sale</label>
                                 </div>
                                 <select class="custom-select" id="inputGroupSelect01_Farmer">
                                     <option selected>Choose...</option>
@@ -472,7 +519,8 @@
                 </div>
                 <br/>
                 <div class="card">
-                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup03_Farmer" style="cursor: pointer">
+                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup03_Farmer"
+                         style="cursor: pointer">
                         Relocate Cow
                     </div>
                     <div class="collapse" id="inputGroup03_Farmer">
@@ -500,7 +548,8 @@
                 </div>
                 <br/>
                 <div class="card">
-                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup04_Farmer" style="cursor: pointer">
+                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup04_Farmer"
+                         style="cursor: pointer">
                         Add Cow Meal
                     </div>
                     <div class="collapse" id="inputGroup04_Farmer">
@@ -534,7 +583,8 @@
                 </div>
                 <br/>
                 <div class="card">
-                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup05_Farmer" style="cursor: pointer">
+                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup05_Farmer"
+                         style="cursor: pointer">
                         Send Cow to Abattoir
                     </div>
                     <div class="collapse" id="inputGroup05_Farmer">
@@ -553,7 +603,8 @@
                 </div>
                 <br/>
                 <div class="card">
-                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup06_Farmer" style="cursor: pointer">
+                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup06_Farmer"
+                         style="cursor: pointer">
                         Set Market Status
                     </div>
                     <div class="collapse" id="inputGroup06_Farmer">
@@ -566,7 +617,8 @@
                                     <option selected>Choose...</option>
                                 </select>
                             </div>
-                            <strong class="card-text">Current Market Status</strong><p class="card-text" id="inputCurrentMarketStatus"></p>
+                            <strong class="card-text">Current Market Status</strong>
+                            <p class="card-text" id="inputCurrentMarketStatus"></p>
                             <input type="checkbox" aria-label="Checkbox for following text input"
                                    id="inputCheck_CurrentMarketStatus"> Check to set for sale.<br/>
                             <a href="#" onclick="setForSale()" class="btn btn-primary">Update Market Status</a>
@@ -575,7 +627,8 @@
                 </div>
                 <br/>
                 <div class="card">
-                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup07_Farmer" style="cursor: pointer">
+                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup07_Farmer"
+                         style="cursor: pointer">
                         Set Vetinarian
                     </div>
                     <div class="collapse" id="inputGroup07_Farmer">
@@ -588,11 +641,13 @@
                                     <option selected>Choose...</option>
                                 </select>
                             </div>
-                            <Strong class="card-text">Current Vetinarian is </Strong><p class="card-text" id="inputCurrentVetinarian"></p>
+                            <Strong class="card-text">Current Vetinarian is </Strong>
+                            <p class="card-text" id="inputCurrentVetinarian"></p>
 
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <label class="input-group-text" for="inputGroupSelect14_Farmer">New Vetinarian</label>
+                                    <label class="input-group-text" for="inputGroupSelect14_Farmer">New
+                                        Vetinarian</label>
                                 </div>
                                 <select class="custom-select" id="inputGroupSelect14_Farmer">
                                     <option selected>Choose...</option>
@@ -604,7 +659,8 @@
                 </div>
                 <br/>
                 <div class="card">
-                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup08_Farmer" style="cursor: pointer">
+                    <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup08_Farmer"
+                         style="cursor: pointer">
                         Set Cow Status
                     </div>
                     <div class="collapse" id="inputGroup08_Farmer">
@@ -654,7 +710,8 @@
                 </button>
             </div>
             <div class="card">
-                <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup01_Retailer" style="cursor: pointer">
+                <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup01_Retailer"
+                     style="cursor: pointer">
                     Purchase Parts
                 </div>
                 <div class="collapse" id="inputGroup01_Retailer">
@@ -680,7 +737,8 @@
             </div>
             <br/>
             <div class="card">
-                <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup02_Retailer" style="cursor: pointer">
+                <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup02_Retailer"
+                     style="cursor: pointer">
                     Set Part Value
                 </div>
                 <div class="collapse" id="inputGroup02_Retailer">
@@ -700,7 +758,8 @@
                             <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
                                    id="inputPartValuePartId_Retailer">
                         </div>
-                        <Strong class="card-text">Current Part price is </Strong><p class="card-text" id="inputCurrentPartPrice_retailer"></p>
+                        <Strong class="card-text">Current Part price is </Strong>
+                        <p class="card-text" id="inputCurrentPartPrice_retailer"></p>
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">New Price</span>
@@ -730,10 +789,11 @@
                 </button>
             </div>
             <div class="card">
-                <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup01_Vet" style="cursor: pointer">
+                <div class="card-header bg-light" data-toggle="collapse" href="#inputGroup01_Vet"
+                     style="cursor: pointer">
                     Add Checkup
                 </div>
-                <div class="collapse" id="inputGroup01_Vet" >
+                <div class="collapse" id="inputGroup01_Vet">
                     <div class="card-body">
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
@@ -780,7 +840,7 @@
         }
     });
 
-    document.getElementById("ownerAddress").addEventListener('change', function(item) {
+    document.getElementById("ownerAddress").addEventListener('change', function (item) {
         document.getElementById("notification_contract_already_exists").style.display = (checkContractExists(item.target.value)) ? '' : 'none';
     });
 
@@ -823,6 +883,7 @@
             });
         }
     };
+
     function purchasePart_Consumer() {
         //Clear error list and set hidden
         $('#error_list_Consumer').empty();
@@ -856,6 +917,7 @@
             });
         }
     };
+
     function viewPartHistory_Consumer() {
         //Clear error list and set hidden
         $('#error_list_Consumer').empty();
@@ -873,6 +935,7 @@
 
         updateTable(cowAddress, partId);
     }
+
     function addCow() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -905,7 +968,7 @@
         }
 
         let vetAddress = $('#inputTextVetAddress').val();
-        if (vetAddress === "") {
+        if (vetAddress === "" || vetAddress === "Choose...") {
             addItemToList(document.getElementById("error_list_Farmer"), "Vetinarian Address cannot be empty");
         }
 
@@ -951,12 +1014,14 @@
             }, (error, result) => {
                 if (error !== null) {
                     alert(error);
+                    console.log(error);
                 } else {
                     console.log("Cow added to blockchain ( " + result + ")");
                 }
             });
         }
     };
+
     function relocate() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -992,6 +1057,7 @@
             });
         }
     };
+
     function purchaseCow() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1020,6 +1086,7 @@
             });
         }
     };
+
     function addMeal() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1058,6 +1125,7 @@
             });
         }
     };
+
     function toAbbottoir() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1085,6 +1153,7 @@
             });
         }
     };
+
     function setForSale() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1114,6 +1183,7 @@
             });
         }
     }
+
     function setVetinarian() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1147,6 +1217,7 @@
             });
         }
     }
+
     function setCowStatus() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1180,6 +1251,7 @@
             });
         }
     }
+
     function transferPart_Retailer() {
         //Clear error list and set hidden
         $('#error_list_Retailer').empty();
@@ -1213,6 +1285,7 @@
             });
         }
     };
+
     function setPartValue_Retailer() {
         //Clear error list and set hidden
         $('#error_list_Retailer').empty();
@@ -1251,6 +1324,7 @@
             });
         }
     }
+
     function slaughterCow() {
         //Clear error list and set hidden
         $('#error_list').empty();
@@ -1284,6 +1358,7 @@
             });
         }
     };
+
     function addCowPart() {
         //Clear error list and set hidden
         $('#error_list').empty();
@@ -1343,6 +1418,7 @@
             });
         }
     };
+
     function setPartValue() {
 //Clear error list and set hidden
         $('#error_list').empty();
@@ -1381,6 +1457,7 @@
             });
         }
     }
+
     function deployContract() {
         let _address = $('#ownerAddress').val();
         if (!validAddress(_address)) {
@@ -1389,9 +1466,7 @@
             return;
         }
         fromAddress = _address;
-        initContract(web3);
         let wagyuchainContract = getWeb3Contract();
-        wagyuchainContract.at(document.getElementById("ownerAddress").value);
         if (wagyuchainContract) {
             wagyuchainContract.new(
                 {
@@ -1412,12 +1487,12 @@
                             $("#container_deployed").css({display: "block"});
                             $("#container_deploy_address_holder").text('Contract deployed to address: ' + contract.address);
                             deployAddress = contract.address;
-                        } else {
-                            $("#container_deployed").css({display: "block"});
-                            $("#container_deploy_address_holder").text('Contract deployed to address: Not Specified');
+
+                            // init contract at deploy_address and launch event hooks
+                            getContractAtAddress();
                         }
                     } else {
-                        alert('e');
+                        alert(e);
                     }
                 });
         } else {
@@ -1426,13 +1501,32 @@
         }
     };
 
-    if(document.getElementById("inputCheckVet")) {
-        document.getElementById("inputCheckVet").addEventListener('change', function () {
+    bindCheckboxToInput('inputCheckVet', 'inputTextVetAddress');
+    bindCheckboxToInput('inputCheckNoValidParentMale', 'inputGroupSelect04_Farmer');
+    bindCheckboxToInput('inputCheckNoValidParentFemale', 'inputGroupSelect05_Farmer');
+    bindCheckboxToInput('inputCheckVet','inputTextVetAddress');
+
+    function bindCheckboxToInput(checkboxId, inputId, inverse) {
+        let input = document.getElementById(inputId);
+        let checkbox = document.getElementById(checkboxId);
+        if (!checkbox || !input) {
+            console.log("Failed binding Checkbox \'" + checkboxId + "' to \'" + inputId + "\'");
+            return;
+        }
+
+        checkbox.addEventListener('change', function () {
             if (this.checked) {
-                document.getElementById("inputTextVetAddress").value = _activeAccount;
-                document.getElementById("inputTextVetAddress").setAttribute("disabled", "disabled");
+                if (inverse) {
+                    input.setAttribute("disabled", "disabled");
+                } else {
+                    input.removeAttribute("disabled");
+                }
             } else {
-                document.getElementById("inputTextVetAddress").removeAttribute("disabled");
+                if (inverse) {
+                    input.removeAttribute("disabled");
+                } else {
+                    input.setAttribute("disabled", "disabled");
+                }
             }
         });
     }
@@ -1441,12 +1535,14 @@
         if (web3 === null) {
             $('#btnDeployContract').prop('value', 'Error');
             alert("Unable to deploy contract, see developer console.");
+            return false;
         } else {
             // contract deployed address
             if (_address !== "" && validAddress(_address)) {
                 if (web3.eth.getCode(_address) !== "0x") {
                     alert("Contract already deployed.");
                     $('#btnDeployContract').attr('disabled', 'disabled');
+                    return true;
                 }
             }
         }
