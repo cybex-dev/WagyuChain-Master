@@ -550,12 +550,12 @@ function addItemToList(listObject, itemValue) {
 window.addEventListener('load', function () {
     // Get contract instance
     if (deployAddress === "" || web3.eth.getCode(deployAddress) === "0x") {
-        alert('No contract exists, please deploy one first to continue');
         document.querySelectorAll("a.btn.btn-primary").forEach(btn => btn.onclick = false)
     }
     getContractAtAddress();
 
     setActiveAccount(web3.eth.accounts[0] || _activeAccount);
+    deployAddress = web3.eth.accounts[9];
     setEtherAccounts(web3.eth.accounts);
 
     populateAccountList();

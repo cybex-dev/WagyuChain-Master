@@ -79,12 +79,7 @@
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">Select Contract Owner Address</h5>
-                    <p class="card-text">This is the address which will be used as the contract owner. The contract
-                        owner
-                        has
-                        'admin' privileges in the contract.
-                    <address class=""></address>
-                    </p>
+                    <p class="card-text">This is the address which will be used as the contract owner. The contract owner has 'admin' privileges in the contract. </p>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="ownerAddress">Addresses</label>
@@ -93,6 +88,7 @@
                             <option selected>Choose...</option>
                         </select>
                     </div>
+                    <h6 id="notification_contract_already_exists" style="display: none">Contract already exists</h6>
                 </div>
             </div>
             <br/>
@@ -365,7 +361,7 @@
                                 <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)"
                                        id="inputTextNewAddress">
                                 <div class="input-group-append">
-                                    <button onclick="$('#inputTextNewAddress').text(generateNewAddress($('#inputTextNewAddress').val()))"
+                                    <button onclick="$('#inputTextNewAddress').val(generateNewAddress($('#inputTextCowRFIDTag_Farmer').val()))"
                                             class="btn btn-outline-secondary btn-dark" type="button"><span class="text-white">Auto-generate</span>
                                     </button>
                                 </div>
@@ -783,6 +779,11 @@
             document.getElementById("inputTextVetAddress").value = data.detail;
         }
     });
+
+    document.getElementById("ownerAddress").addEventListener('change', function(item) {
+        document.getElementById("notification_contract_already_exists").style.display = (checkContractExists(item.target.value)) ? '' : 'none';
+    });
+
     function addCheckup() {
         //Clear error list and set hidden
         $('#error_list_Vet').empty();
@@ -1390,6 +1391,7 @@
         fromAddress = _address;
         initContract(web3);
         let wagyuchainContract = getWeb3Contract();
+        wagyuchainContract.at(document.getElementById("ownerAddress").value);
         if (wagyuchainContract) {
             wagyuchainContract.new(
                 {
@@ -1401,7 +1403,7 @@
                     if (!e) {
                         if (typeof contract.address !== 'undefined') {
                             console.log('Contract mined! address: ' + contract.address + ' transactionHash: ' + contract.transactionHash);
-                            $('#btnDeployContract').prop('value', 'Redeploy');
+                            $('#btnDeployContract').prop('value', 'Deployed').attr("disabled", "disabled");
 
                             var parent = document.getElementById("alert-container");
                             if (parent) {
@@ -1434,20 +1436,22 @@
             }
         });
     }
-    window.addEventListener('load', function () {
+
+    function checkContractExists(_address) {
         if (web3 === null) {
             $('#btnDeployContract').prop('value', 'Error');
-            alert("Unable to deploy contract, see developer console.")
+            alert("Unable to deploy contract, see developer console.");
         } else {
             // contract deployed address
-            if (ownerAddress !== "" && validAddress(ownerAddress)) {
-                if (web3.eth.getCode(ownerAddress) !== "0x") {
+            if (_address !== "" && validAddress(_address)) {
+                if (web3.eth.getCode(_address) !== "0x") {
                     alert("Contract already deployed.");
-                    $('#btnDeployContract').attr('value', 'Redeploy');
+                    $('#btnDeployContract').attr('disabled', 'disabled');
                 }
             }
         }
-    });
+        return false;
+    }
 </script>
 </body>
 </html>
