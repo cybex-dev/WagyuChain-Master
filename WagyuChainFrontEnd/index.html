@@ -150,7 +150,7 @@
                                 <option selected>Choose...</option>
                             </select>
                         </div>
-                        <a href="#" onclick="slaughterCow()" class="btn btn-primary">Cow Slaughtered</a>
+                        <a href="#" id="btnSlaughterCow" class="btn btn-primary">Cow Slaughtered</a>
                     </div>
                 </div>
             </div>
@@ -208,7 +208,7 @@
                             </div>
                             <input type="text" class="form-control" id="inputTextPartDescription">
                         </div>
-                        <a href="#" onclick="addCowPart()" class="btn btn-primary">Add Part</a>
+                        <a href="#" id="btnAddCowPart" class="btn btn-primary">Add Part</a>
                     </div>
                 </div>
             </div>
@@ -243,7 +243,7 @@
                             <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
                                    id="inputPurchaseNewPartValue">
                         </div>
-                        <a href="#" onclick="setPartValue()" class="btn btn-primary">Update Value</a>
+                        <a href="#" id="btnSetPartValue" class="btn btn-primary">Update Value</a>
                     </div>
                 </div>
             </div>
@@ -287,7 +287,7 @@
                             <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
                                    id="inputPurchasePartId_Consumer">
                         </div>
-                        <a href="#" onclick="purchasePart_Consumer()" class="btn btn-primary">Purchase</a>
+                        <a href="#" id="btnPurchasePart_Consumer" class="btn btn-primary">Purchase</a>
                     </div>
                 </div>
             </div>
@@ -315,7 +315,7 @@
                             <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
                                    id="inputViewPartIdHistory">
                         </div>
-                        <a href="#" onclick="viewPartHistory_Consumer()" class="btn btn-primary">View</a>
+                        <a href="#" id="btnViewPartHistory_Consumer" class="btn btn-primary">View</a>
                     </div>
                 </div>
             </div>
@@ -491,7 +491,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <a href="#" onclick="addCow()" class="btn btn-primary">Add New Cow</a>
+                            <a href="#" id="btnAddCow" class="btn btn-primary">Add New Cow</a>
                         </div>
                     </div>
                 </div>
@@ -513,7 +513,7 @@
                                     <option selected>Choose...</option>
                                 </select>
                             </div>
-                            <a href="#" onclick="purchaseCow()" class="btn btn-primary">Purchase</a>
+                            <a href="#" id="btnPurchaseCow" class="btn btn-primary">Purchase</a>
                         </div>
                     </div>
                 </div>
@@ -542,7 +542,7 @@
                                     <option selected>Choose...</option>
                                 </select>
                             </div>
-                            <a href="#" onclick="relocate()" class="btn btn-primary">Relocate</a>
+                            <a href="#" id="btnRelocate" class="btn btn-primary">Relocate</a>
                         </div>
                     </div>
                 </div>
@@ -577,7 +577,7 @@
                                 <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
                                        id="inputNumberFoodQuantity">
                             </div>
-                            <a href="#" onclick="addMeal()" class="btn btn-primary">Add Meal</a>
+                            <a href="#" id="btnAddMeal" class="btn btn-primary">Add Meal</a>
                         </div>
                     </div>
                 </div>
@@ -597,7 +597,7 @@
                                     <option selected>Choose...</option>
                                 </select>
                             </div>
-                            <a href="#" onclick="toAbbottoir()" class="btn btn-primary">Slaughter Cow</a>
+                            <a href="#" id="btnToAbbottoir" class="btn btn-primary">Slaughter Cow</a>
                         </div>
                     </div>
                 </div>
@@ -621,7 +621,7 @@
                             <p class="card-text" id="inputCurrentMarketStatus"></p>
                             <input type="checkbox" aria-label="Checkbox for following text input"
                                    id="inputCheck_CurrentMarketStatus"> Check to set for sale.<br/>
-                            <a href="#" onclick="setForSale()" class="btn btn-primary">Update Market Status</a>
+                            <a href="#" id="btnSetForSale" class="btn btn-primary">Update Market Status</a>
                         </div>
                     </div>
                 </div>
@@ -653,7 +653,7 @@
                                     <option selected>Choose...</option>
                                 </select>
                             </div>
-                            <a href="#" onclick="setVetinarian()" class="btn btn-primary">Update Vetinarian</a>
+                            <a href="#" id="btnSetVetinarian" class="btn btn-primary">Update Vetinarian</a>
                         </div>
                     </div>
                 </div>
@@ -687,7 +687,7 @@
                                     <option value="5">Slaughtered</option>
                                 </select>
                             </div>
-                            <a href="#" onclick="setCowStatus()" class="btn btn-primary">Update Status</a>
+                            <a href="#" id="btnSetCowStatus" class="btn btn-primary">Update Status</a>
                         </div>
                     </div>
                 </div>
@@ -731,7 +731,7 @@
                             <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
                                    id="inputPurchasePartId">
                         </div>
-                        <a href="#" onclick="transferPart_Retailer()" class="btn btn-primary">Purchase</a>
+                        <a href="#" id="btnTransferPart_Retailer" class="btn btn-primary">Purchase</a>
                     </div>
                 </div>
             </div>
@@ -767,7 +767,7 @@
                             <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
                                    id="inputPurchaseNewPartValue_Retailer">
                         </div>
-                        <a href="#" onclick="setPartValue_Retailer()" class="btn btn-primary">New Part Value</a>
+                        <a href="#" id="btnSetPartValue_Retailer" class="btn btn-primary">New Part Value</a>
                     </div>
                 </div>
             </div>
@@ -815,7 +815,7 @@
                             </div>
                             <input type="text" class="form-control" id="inputTextVetCheckupDescription">
                         </div>
-                        <a href="#" onclick="addCheckup()" class="btn btn-primary">Add Checkup</a>
+                        <a href="#" id="btnAddCheckup" class="btn btn-primary">Add Checkup</a>
                     </div>
                 </div>
             </div>
@@ -883,7 +883,6 @@
             });
         }
     };
-
     function purchasePart_Consumer() {
         //Clear error list and set hidden
         $('#error_list_Consumer').empty();
@@ -917,7 +916,6 @@
             });
         }
     };
-
     function viewPartHistory_Consumer() {
         //Clear error list and set hidden
         $('#error_list_Consumer').empty();
@@ -934,8 +932,7 @@
         }
 
         updateTable(cowAddress, partId);
-    }
-
+    };
     function addCow() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1021,7 +1018,6 @@
             });
         }
     };
-
     function relocate() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1057,7 +1053,6 @@
             });
         }
     };
-
     function purchaseCow() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1086,7 +1081,6 @@
             });
         }
     };
-
     function addMeal() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1125,7 +1119,6 @@
             });
         }
     };
-
     function toAbbottoir() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1153,7 +1146,6 @@
             });
         }
     };
-
     function setForSale() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1182,8 +1174,7 @@
                 }
             });
         }
-    }
-
+    };
     function setVetinarian() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1216,8 +1207,7 @@
                 }
             });
         }
-    }
-
+    };
     function setCowStatus() {
         //Clear error list and set hidden
         $('#error_list_Farmer').empty();
@@ -1250,8 +1240,7 @@
                 }
             });
         }
-    }
-
+    };
     function transferPart_Retailer() {
         //Clear error list and set hidden
         $('#error_list_Retailer').empty();
@@ -1285,7 +1274,6 @@
             });
         }
     };
-
     function setPartValue_Retailer() {
         //Clear error list and set hidden
         $('#error_list_Retailer').empty();
@@ -1324,7 +1312,6 @@
             });
         }
     }
-
     function slaughterCow() {
         //Clear error list and set hidden
         $('#error_list').empty();
@@ -1358,7 +1345,6 @@
             });
         }
     };
-
     function addCowPart() {
         //Clear error list and set hidden
         $('#error_list').empty();
@@ -1418,7 +1404,6 @@
             });
         }
     };
-
     function setPartValue() {
 //Clear error list and set hidden
         $('#error_list').empty();
@@ -1457,7 +1442,6 @@
             });
         }
     }
-
     function deployContract() {
         let _address = $('#ownerAddress').val();
         if (!validAddress(_address)) {
@@ -1500,6 +1484,25 @@
             alert('Web3 Contract is null, cannot deploy!');
         }
     };
+
+    document.getElementById("btnAddCow").addEventListener('click', () => addCow());
+    document.getElementById("btnSetPartValue").addEventListener('click', () => setPartValue());
+    document.getElementById("btnAddCowPart").addEventListener('click', () => addCowPart());
+    document.getElementById("btnSlaughterCow").addEventListener('click', () => slaughterCow());
+    document.getElementById("btnSetPartValue_Retailer").addEventListener('click', () => setPartValue_Retailer());
+    document.getElementById("btnTransferPart_Retailer").addEventListener('click', () => transferPart_Retailer());
+    document.getElementById("btnSetCowStatus").addEventListener('click', () => setCowStatus());
+    document.getElementById("btnSetVetinarian").addEventListener('click', () => setVetinarian());
+    document.getElementById("btnSetForSale").addEventListener('click', () => setForSale());
+    document.getElementById("btnToAbbottoir").addEventListener('click', () => toAbbottoir());
+    document.getElementById("btnAddMeal").addEventListener('click', () => addMeal());
+    document.getElementById("btnPurchaseCow").addEventListener('click', () => purchaseCow());
+    document.getElementById("btnRelocate").addEventListener('click', () => relocate());
+    document.getElementById("btnViewPartHistory_Consumer").addEventListener('click', () => viewPartHistory_Consumer());
+    document.getElementById("btnPurchasePart_Consumer").addEventListener('click', () => purchasePart_Consumer());
+    document.getElementById("btnAddCheckup").addEventListener('click', () => addCheckup());
+
+
 
     bindCheckboxToInput('inputCheckVet', 'inputTextVetAddress');
     bindCheckboxToInput('inputCheckNoValidParentMale', 'inputGroupSelect04_Farmer');
